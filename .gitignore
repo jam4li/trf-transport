@@ -1,0 +1,83 @@
+# =============================================================================
+# WordPress best practice: track YOUR code + hosting config.
+# Ignore core, third-party plugins/themes, media, caches, secrets, and junk.
+# =============================================================================
+
+# ----- Secrets & local config -----
+wp-config.php
+wp-config-local.php
+.env
+.env.*
+!.env.example
+
+# ----- Logs & backups -----
+error_log
+*.log
+debug.log
+*.bk
+*.bak
+*~
+
+# ----- WordPress core (reinstallable via WP / host) -----
+/wp-admin/
+/wp-includes/
+/wp-*.php
+!/wp-config-sample.php
+/xmlrpc.php
+/license.txt
+/readme.html
+/readme.*
+/index.php
+
+# ----- Media (keep on server / separate backup) -----
+/wp-content/uploads/
+
+# ----- Caches, temp, security/plugin runtime -----
+/wp-content/cache/
+/wp-content/litespeed/
+/wp-content/wflogs/
+/wp-content/upgrade/
+/wp-content/upgrade-temp-backup/
+/wp-content/aiowps_backups/
+/wp-content/backups/
+/wp-content/backup*/
+/wp-content/temp/
+/wp-content/tmp/
+
+# ----- Translation packs (re-downloadable) -----
+/wp-content/languages/
+
+# ----- Themes: ignore stock; keep only custom/child themes -----
+/wp-content/themes/*
+!/wp-content/themes/index.php
+# Uncomment the next line if you customize Hello Elementor and need it in git:
+# !/wp-content/themes/hello-elementor/
+
+# ----- Plugins: ignore third-party; keep custom plugins only -----
+/wp-content/plugins/*
+!/wp-content/plugins/index.php
+!/wp-content/plugins/wp-warranty-check/
+
+# ----- Archives / dumps -----
+*.sql
+*.sql.gz
+*.tar
+*.tar.gz
+*.zip
+*.rar
+*.7z
+
+# ----- Host / ACME -----
+.well-known/
+
+# ----- OS / editor / build junk -----
+.DS_Store
+Thumbs.db
+*.swp
+.idea/
+.vscode/
+*.code-workspace
+node_modules/
+npm-debug.log*
+yarn-error.log*
+vendor/

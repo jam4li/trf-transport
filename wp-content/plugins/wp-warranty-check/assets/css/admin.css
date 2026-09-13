@@ -1,0 +1,428 @@
+.wrap #ax_table {
+  width: 100%;
+  background: #fbfbfb;
+  border-radius: 8px;
+  border: 1px solid #84787863;
+}
+.wrap .back-btn {
+  display: flex;
+  flex-flow: row;
+  width: max-content;
+  align-items: center;
+  gap: 5px;
+  padding: 5px;
+  border-radius: 5px;
+  box-shadow: 1px 1px 3px #999;
+  background: orangered;
+  color: white;
+  text-decoration: none;
+}
+.wrap .header_controls {
+  display: flex;
+  flex-flow: column wrap;
+  gap: 20px;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0;
+}
+.wrap .flexed {
+  display: flex;
+  flex-flow: row wrap;
+  gap: 5px;
+  justify-content: center;
+  align-items: center;
+}
+.wrap #ax_table a:nth-child(2),
+  .wrap #ax_table a:nth-child(3) {
+  display: none;
+}
+.wrap form.flexed div {
+  position: relative;
+}
+.wrap #begin_search_validations,
+.wrap #begin_search_warranties {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 20%;
+  border-radius: 5px 0px 0px 5px;
+}
+@media screen and (min-width: 1024px) {
+  .wrap .header_controls {
+    flex-flow: row wrap;
+    justify-content: space-between;
+  }
+  .wrap #ax_table a:nth-child(2),
+  .wrap #ax_table a:nth-child(3) {
+    display: block;
+  }
+}
+.wrap #ax_table thead tr,
+.wrap #ax_table tfoot tr {
+  background: none !important;
+}
+.wrap #ax_table th.chek_column {
+  padding: 0;
+  width: 0;
+}
+.wrap #ax_table tr:nth-child(2n-1) {
+  background: rgba(140, 208, 238, 0.41);
+}
+.wrap #ax_table td {
+  vertical-align: middle;
+  max-width: 350px;
+}
+.wrap #ax_table #idents {
+  text-align: left;
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+}
+.wrap #ax_table a:nth-child(1) {
+  text-align: center;
+}
+.wrap #ax_table #item_id {
+  max-width: 90px;
+}
+.wrap #ax_table #item_id div {
+  background: #e2a7a7;
+  border-radius: 4px;
+  padding: 4px;
+  float: left;
+  align-items: center;
+  margin: 0;
+}
+.wrap #ax_table a {
+  cursor: pointer;
+}
+.wrap #ax_table .dashicons {
+  float: right;
+  font-size: 18px;
+}
+.wrap #ax_table .dashicons-trash {
+  color: red;
+}
+.wrap .success {
+  max-width: 320px;
+  margin: 10px auto !important;
+  padding: 10px;
+  text-align: center;
+  background: palegreen;
+  color: black;
+  border-radius: 4px;
+}
+.wrap .error {
+  max-width: 320px;
+  margin: 0 auto;
+  padding: 10px;
+  text-align: center;
+  background: coral;
+  color: black;
+}
+.wrap .details {
+  background: white;
+  padding: 10px 15px;
+  margin-top: 20px;
+  border: 1px solid #e4e4e4;
+  border-radius: 8px;
+  box-shadow: 0 12px 16px 3px #c3c3c3;
+  position: relative;
+}
+.wrap .details h3 {
+  background: aliceblue;
+  padding: 10px;
+  border-radius: 4px;
+  max-width: fit-content;
+  box-shadow: 3px 3px 16px #b5d7f5;
+}
+.wrap .details a {
+  position: absolute;
+  top: 0;
+  left: 0;
+  transform: translate(20px, 20px);
+}
+.wrap .details a span {
+  color: white;
+  background: #e2774f;
+  padding: 5px;
+  border-radius: 50%;
+  box-shadow: 1px 1px 7px 0px #de7878;
+  text-decoration: none;
+}
+.wrap .details a span:hover {
+  background: #bb512a;
+}
+.wrap .details h3 {
+  color: #666;
+}
+.wrap .details ul {
+  padding: 0 10px;
+  color: #444;
+}
+.wrap .gate_section.unconfigured {
+  border-right-color: #b44646;
+}
+.wrap .gate_section {
+  border-right: 4px solid #46b450;
+  padding: 10px;
+  margin: 20px 0;
+  background: #f7f7f7;
+  border-radius: 4px;
+}
+.gate_section p {
+  display: flex;
+  flex-flow: row wrap;
+  align-items: center;
+  gap: 5px;
+}
+.gate_section p svg {
+  height: 24px;
+}
+.ax_panel .wrap select {
+  width: 100%;
+}
+
+/* Style the panel container */
+.ax_panel-wrap {
+  background: #1d0f3e;
+  position: relative;
+  border-radius: 12px;
+  margin: 30px auto;
+  max-width: 1360px;
+}
+.ax_panel-wrap h1 {
+  position: absolute;
+  top: 0;
+  margin: 0 auto;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #777;
+}
+.ax_panel {
+  display: flex;
+  flex-flow: row wrap;
+}
+.ax_save {
+  flex: 1;
+  height: 56px;
+  transform: translateY(20%);
+}
+/* Style the tab */
+.ax_tab {
+  overflow: hidden;
+  width: 100%;
+  border: 1px solid #ccc;
+  border-left: none;
+  background-color: #f1f1f1;
+  display: flex;
+  flex-flow: column wrap;
+  flex: 1;
+}
+
+/* Style the buttons that are used to open the tab content */
+.ax_tab button {
+  background-color: inherit;
+  border: none;
+  border-bottom: 1px solid #ccc;
+  outline: none;
+  cursor: pointer;
+  padding: 14px 16px;
+  transition: 0.3s;
+}
+
+/* Change background color of buttons on hover */
+.ax_tab button:hover {
+  background-color: #ddd;
+}
+
+/* Create an active/current tablink class */
+.ax_tab button.active {
+  background-color: #444;
+  color: #ccc;
+  position: relative;
+}
+
+/* Style the tab content */
+.ax_tabcontent {
+  display: none;
+  flex: 6;
+  background: #fff;
+  padding: 2rem 4rem;
+  width: 100%;
+  box-shadow: rgb(210, 210, 210) 10px 10px 16px;
+  position: relative;
+  overflow: hidden;
+}
+.ax_tabcontent .wrap {
+  margin: 20px 0;
+  width: 99%;
+}
+
+/* Style pure button */
+.ax_btn {
+  padding: 8px 42px;
+  border-radius: 4px;
+  border: 2px solid;
+  text-align: center;
+  font-weight: bold;
+  transition: all ease-in-out 150ms;
+}
+
+.ax_btn:hover {
+  box-shadow: 4px 4px 0px 0px #2942b3;
+  cursor: pointer;
+}
+
+.ax_primary {
+  background-color: #3858e9;
+  color: white;
+  border-color: #3858e9;
+}
+
+.ax_secondary {
+  background-color: transparent;
+  color: rgb(6, 111, 223);
+  border-color: rgb(6, 111, 223);
+}
+
+.ax_green {
+  background-color: rgb(11, 179, 87);
+  color: white;
+  border-color: rgb(11, 179, 87);
+}
+
+.ax_violet {
+  background-color: rgb(128, 0, 255);
+  color: white;
+  border-color: rgb(128, 0, 255);
+}
+.ax_panel aside {
+  position: relative;
+}
+.ax_panel aside div {
+  position: absolute;
+  bottom: 10%;
+  color: rgb(151, 151, 151);
+  text-align: center;
+  width: 100%;
+}
+.ax_panel aside div span svg {
+  width: 18px;
+  margin: -6px 0;
+}
+.ax_panel aside div a {
+  color: #eaeaea;
+}
+
+.ax_panel aside #ax_software_info small {
+  line-height: 30px;
+    text-align: center;
+}
+
+.ax_panel aside #ax_software_info small span {
+  background: white;
+  padding: 3px 7px;
+  border-radius: 8px;
+  margin: 5px;
+  color: #272727;
+}
+
+/* Activation Box */
+.ax_panel-wrap .activation_box {
+  background: #f7f5f5;
+  border: #ccc;
+  padding: 10px 30px;
+  border-radius: 4px;
+}
+.ax_panel-wrap .activation_box button.button-secondary:hover {
+  background: #3858e9 !important;
+  color: aliceblue !important;
+  transition: all 400ms;
+}
+.ax_panel-wrap .activation_box form {
+  display: flex;
+  gap: 12px;
+  max-width: 820px;
+  margin: 0 auto;
+  padding: 32px 0;
+}
+.ax_panel-wrap .update-nag {
+  background: white;
+  border-right: 10px solid #ffba00;
+  border-radius: 0 5px 5px 0;
+}
+
+/* Responsive */
+@media (max-width: 639px) {
+  .ax_panel {
+    flex-flow: column wrap;
+  }
+  .ax_tabcontent {
+    padding: 2rem 0px;
+    border: 1px solid #ccc;
+  }
+  .ax_btn {
+    width: 100%;
+    margin: 15px 0;
+  }
+  .ax_tab button {
+    border: 1px solid #ccc;
+  }
+  .ax_panel-wrap {
+    background: transparent;
+  }
+  .ax_tabcontent .wrap {
+    padding: 8px;
+  }
+  .ax_panel-wrap form {
+    padding: 25px;
+  }
+  .ax_panel aside div {
+    bottom: auto;
+  }
+  .ax_panel aside div a,
+  #twitter,
+  #github {
+    color: #1d0f3e;
+  }
+}
+@media (min-width: 640px) {
+  .ax_tab button {
+    font-size: 12px;
+    padding: 14px 2px;
+  }
+  .ax_tabcontent {
+    padding: 2rem 1rem;
+  }
+  .ax_save {
+    margin: 0 5px;
+  }
+  .ax_tablinks.active::after {
+    content: '';
+    background: white;
+    width: 16px;
+    height: 16px;
+    display: flex;
+    left: -5%;
+    position: absolute;
+    top: 50%;
+    transform: rotate(45deg) translateX(-50%);
+  }
+}
+@media (min-width: 1280px) {
+  .ax_tab button {
+    padding: 14px 16px;
+  }
+  .ax_tabcontent {
+    padding: 2rem 4rem;
+  }
+  .ax_save {
+    margin: 0 30px;
+  }
+}
+@media (min-width: 1536px) {
+  .ax_panel {
+    max-width: 1366px;
+    margin: 0 auto;
+  }
+}

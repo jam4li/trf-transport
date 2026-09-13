@@ -1,0 +1,29 @@
+#warranty_details {
+    opacity: 0;
+    transition: all ease-in-out 250ms;
+    display: grid;
+    grid-template-columns: auto;
+    gap: 15px;
+}
+#warranty_period {
+    width: 95%;
+}
+#warranty_period[disabled] {
+    opacity: 40%;
+}
+#begin_period {
+    width: 50%;
+}
+.row {
+    display: flex;
+    flex-flow: row wrap;
+    align-items: center;
+}
+.row div {
+    flex: 1;
+}
+.col {
+    display: flex;
+    flex-flow: column wrap;
+    gap: 5px;
+}
