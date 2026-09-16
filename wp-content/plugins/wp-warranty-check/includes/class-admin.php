@@ -179,12 +179,13 @@ class AdminMenuHandlers
 
             // alter validation record
             if (isset($_POST['saveDetails']) && isset($_GET['id'])) {
+                $gallery_fields = ValidationGallery::db_fields_from_urls(ValidationGallery::urls_from_request());
                 $result = $wpdb->update(
                     $wpdb->prefix . "wpwv_validations",
-                    [
-                        'description' => sanitize_textarea_field($_POST['description']),
-                        'thumbnail_url' => sanitize_text_field($_POST['thumbnail_url'])
-                    ],
+                    array_merge(
+                        ['description' => sanitize_textarea_field($_POST['description'])],
+                        $gallery_fields
+                    ),
                     ['id' => $_GET['id']]
                 );
 
@@ -220,14 +221,16 @@ class AdminMenuHandlers
         if (isset($_POST['saveData'])) {
             $validation  = sanitize_text_field($_POST['validation']);
             $description = sanitize_textarea_field($_POST['description']);
-            $thumbnail_url = sanitize_text_field($_POST['thumbnail_url']);
+            $gallery_fields = ValidationGallery::db_fields_from_urls(ValidationGallery::urls_from_request());
             $result      = $wpdb->insert(
                 $wpdb->prefix . 'wpwv_validations',
-                [
-                    'validation'  => $validation,
-                    'description' => $description,
-                    'thumbnail_url' => $thumbnail_url
-                ]
+                array_merge(
+                    [
+                        'validation'  => $validation,
+                        'description' => $description,
+                    ],
+                    $gallery_fields
+                )
             );
 
             if (gettype($result) == 'integer') {

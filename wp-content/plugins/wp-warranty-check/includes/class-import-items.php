@@ -91,7 +91,10 @@ class Importer {
 
             $validation     = trim($row[0]);
             $description    = trim($row[1]);
-            $thumbnail_url  = trim($row[2]) ?? '';
+            $images_raw     = isset($row[2]) ? trim($row[2]) : '';
+            // Multiple images: separate with | in the 3rd CSV column
+            $gallery_urls   = ValidationGallery::normalize_urls(array_filter(array_map('trim', explode('|', $images_raw))));
+            $gallery_fields = ValidationGallery::db_fields_from_urls($gallery_urls);
 
             //  check if data is correct
             if (!empty($validation) && !empty($description)) {
@@ -102,11 +105,13 @@ class Importer {
                 if (!isset($check_result[0]->id)) {
                     $wpdb->insert(
                         $wpdb->prefix . "wpwv_validations",
-                        [
-                            'validation'    => $validation,
-                            'description'   => $description,
-                            'thumbnail_url' => $thumbnail_url
-                        ]
+                        array_merge(
+                            [
+                                'validation'    => $validation,
+                                'description'   => $description,
+                            ],
+                            $gallery_fields
+                        )
                     );
                     $this->rows_inserted++;
                 } else $this->duplicate_rows++;

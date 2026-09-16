@@ -45,6 +45,7 @@ class DatabaseStruct {
             `validation` varchar(255) NOT NULL,
             `description` text NOT NULL,
             `thumbnail_url` varchar(255) DEFAULT NULL,
+            `gallery_urls` longtext DEFAULT NULL,
             PRIMARY KEY (`id`),
             UNIQUE (`validation`)
         ) ENGINE = InnoDB DEFAULT CHARSET = utf8mb4 COLLATE = utf8mb4_unicode_ci";

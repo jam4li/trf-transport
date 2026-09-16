@@ -166,6 +166,8 @@ class TrustWarrantyPlugin
         require_once TRUST_INC . 'class-ajax-calls-proxy.php';
         require_once TRUST_INC . 'Database/class-db-migrate.php';
         require_once TRUST_INC . 'Database/class-db-activate.php';
+        require_once TRUST_INC . 'class-validation-gallery.php';
+        \Trust\INC\ValidationGallery::boot();
     }
 
     public function load_dependencies()

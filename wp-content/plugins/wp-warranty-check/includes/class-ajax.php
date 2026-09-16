@@ -288,16 +288,19 @@ class WarrantyAJAXCalls extends AJAXCalls {
 class ValidationAJAXCalls extends AJAXCalls {
     public function lookup() {
         $this->uid   = sanitize_text_field($_POST['validation']);
-        $this->query_result = Utils::makeQueryByValidationOn($this->uid, 'description,thumbnail_url');
+        $this->query_result = Utils::makeQueryByValidationOn($this->uid, 'description,thumbnail_url,gallery_urls');
         $result = $this->query_result !== null ? 'ok' : 'fail';
 
-        if ($result === 'ok') $this->send_response([
-            'status'        => $result,
-            'description'   => $this->query_result->description,
-            'thumbnail_url' => $this->query_result->thumbnail_url,
-            'validation'    => $this->uid
-        ]);
-        else $this->send_response([
+        if ($result === 'ok') {
+            $gallery = ValidationGallery::gallery_from_row($this->query_result);
+            $this->send_response([
+                'status'        => $result,
+                'description'   => $this->query_result->description,
+                'thumbnail_url' => $gallery[0] ?? '',
+                'gallery'       => $gallery,
+                'validation'    => $this->uid
+            ]);
+        } else $this->send_response([
             'status' => $result,
             'description' => get_option('wpwv_options')['invalid_validation_msg']
         ]);

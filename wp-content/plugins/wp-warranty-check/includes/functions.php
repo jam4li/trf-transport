@@ -71,7 +71,7 @@ class Functions
     public function load_frontend_assets()
     {
         wp_enqueue_style('trust-styles', TRUST_URL . 'assets/css/style.css');
-        wp_enqueue_script('trust-bundle', TRUST_URL . 'templates/frontend/trust-app-v1/trust-bundle.js', [], '1.0.0', true);
+        wp_enqueue_script('trust-bundle', TRUST_URL . 'templates/frontend/trust-app-v1/trust-bundle.js', [], '1.1.0', true);
 
 
         if ($this->options['is_warranty_active']) {
