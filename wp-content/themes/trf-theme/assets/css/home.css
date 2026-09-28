@@ -2,16 +2,20 @@
 
 .trf-section {
 	padding: 4.5rem 0;
+	overflow-x: clip;
 }
 
 .trf-section__head {
 	text-align: center;
 	margin-bottom: 2rem;
+	padding-inline: 0.25rem;
 }
 
 .trf-section__head h2 {
-	font-size: clamp(1.6rem, 2.4vw, 2.2rem);
+	font-size: clamp(1.45rem, 2.4vw, 2.2rem);
 	margin-bottom: 0.55rem;
+	text-wrap: balance;
+	overflow-wrap: anywhere;
 }
 
 .trf-section__head p {
@@ -50,16 +54,20 @@
 	z-index: 1;
 	padding: 5rem 0 4rem;
 	text-align: center;
+	max-width: 48rem;
+	margin-inline: auto;
 }
 
 .trf-hero h1 {
-	font-size: clamp(1.9rem, 4vw, 3rem);
-	line-height: 1.3;
+	font-size: clamp(1.55rem, 4vw, 3rem);
+	line-height: 1.35;
 	margin-bottom: 0.75rem;
+	text-wrap: balance;
+	overflow-wrap: anywhere;
 }
 
 .trf-hero__lead {
-	font-size: 1.2rem;
+	font-size: clamp(1rem, 2vw, 1.2rem);
 	color: rgba(255, 255, 255, 0.92);
 	margin-bottom: 1.5rem;
 }
@@ -78,7 +86,7 @@
 
 .trf-services__grid {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: 1.1rem;
 }
 
@@ -131,7 +139,7 @@
 /* About */
 .trf-about__grid {
 	display: grid;
-	grid-template-columns: 1fr 1.1fr;
+	grid-template-columns: minmax(0, 1fr) minmax(0, 1.1fr);
 	gap: 2.5rem;
 	align-items: center;
 }
@@ -169,6 +177,7 @@
 	justify-content: center;
 	gap: 0.5rem;
 	margin-bottom: 1.75rem;
+	max-width: 100%;
 }
 
 .trf-tabs__btn {
@@ -198,7 +207,7 @@
 
 .trf-country-panel {
 	display: none;
-	grid-template-columns: 0.9fr 1.2fr;
+	grid-template-columns: minmax(0, 0.9fr) minmax(0, 1.2fr);
 	gap: 2rem;
 	align-items: center;
 	background: var(--trf-white);
@@ -242,10 +251,12 @@
 .trf-agents__viewport {
 	position: relative;
 	display: none;
+	min-width: 0;
 }
 
 .trf-agents__viewport.is-active {
 	display: block;
+	overflow: hidden;
 }
 
 .trf-agents__track {
@@ -254,10 +265,12 @@
 	grid-auto-columns: calc((100% - 2.4rem) / 4);
 	gap: 1.2rem;
 	overflow-x: auto;
+	overscroll-behavior-inline: contain;
 	scroll-snap-type: x mandatory;
 	scroll-behavior: smooth;
 	padding: 0.35rem 0.15rem 1rem;
 	scrollbar-width: none;
+	-webkit-overflow-scrolling: touch;
 }
 
 .trf-agents__track::-webkit-scrollbar {
@@ -270,6 +283,7 @@
 	border: 1px solid var(--trf-line);
 	border-radius: var(--trf-radius);
 	overflow: hidden;
+	min-width: 0;
 	box-shadow: 0 8px 22px rgba(0, 0, 0, 0.05);
 }
 
@@ -294,6 +308,7 @@
 }
 
 .trf-agents__nav {
+	display: none;
 	position: absolute;
 	top: 42%;
 	transform: translateY(-50%);
@@ -311,11 +326,15 @@
 }
 
 .trf-agents__nav--prev {
-	inset-inline-start: -0.4rem;
+	inset-inline-start: 0.15rem;
 }
 
 .trf-agents__nav--next {
-	inset-inline-end: -0.4rem;
+	inset-inline-end: 0.15rem;
+}
+
+.trf-agents__viewport.has-overflow .trf-agents__nav {
+	display: block;
 }
 
 /* Articles */
@@ -325,7 +344,7 @@
 
 .trf-articles__grid {
 	display: grid;
-	grid-template-columns: repeat(4, 1fr);
+	grid-template-columns: repeat(4, minmax(0, 1fr));
 	gap: 1.15rem;
 }
 
@@ -377,37 +396,77 @@
 @media (max-width: 1100px) {
 	.trf-services__grid,
 	.trf-articles__grid {
-		grid-template-columns: repeat(2, 1fr);
+		grid-template-columns: repeat(2, minmax(0, 1fr));
 	}
 
 	.trf-agents__track {
-		grid-auto-columns: calc((100% - 1.2rem) / 3);
+		grid-auto-columns: calc((100% - 1.2rem) / 2);
 	}
 }
 
 @media (max-width: 900px) {
 	.trf-about__grid,
-	.trf-country-panel.is-active,
-	.trf-footer__grid {
-		grid-template-columns: 1fr;
+	.trf-country-panel.is-active {
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.trf-hero {
+		min-height: min(62vh, 520px);
+	}
+
+	.trf-hero__content {
+		padding: 3.5rem 0 3rem;
+	}
+
+	.trf-tabs {
+		flex-wrap: nowrap;
+		justify-content: flex-start;
+		overflow-x: auto;
+		overscroll-behavior-inline: contain;
+		scrollbar-width: none;
+		-webkit-overflow-scrolling: touch;
+		padding-bottom: 0.35rem;
+	}
+
+	.trf-tabs::-webkit-scrollbar {
+		display: none;
+	}
+
+	.trf-tabs__btn {
+		flex-shrink: 0;
 	}
 }
 
 @media (max-width: 720px) {
 	.trf-section {
-		padding: 3.25rem 0;
+		padding: 3rem 0;
 	}
 
 	.trf-services__grid,
 	.trf-articles__grid {
-		grid-template-columns: 1fr;
+		grid-template-columns: minmax(0, 1fr);
+	}
+
+	.trf-service-card {
+		min-height: 240px;
 	}
 
 	.trf-agents__track {
-		grid-auto-columns: calc((100% - 0.8rem) / 1.35);
+		grid-auto-columns: minmax(0, 78%);
 	}
 
-	.trf-agents__nav {
-		display: none;
+	.trf-agents__viewport.has-overflow .trf-agents__nav {
+		width: 36px;
+		height: 36px;
+		font-size: 1.25rem;
+	}
+
+	.trf-hero__actions {
+		flex-direction: column;
+		align-items: stretch;
+	}
+
+	.trf-hero__actions .trf-btn {
+		width: 100%;
 	}
 }
