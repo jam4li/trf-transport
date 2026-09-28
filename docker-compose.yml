@@ -29,7 +29,7 @@ services:
     build:
       context: ./docker
       dockerfile: Dockerfile.wordpress
-    image: trf-wordpress:php8.1-ioncube
+    image: trf-wordpress:php8.1
     container_name: trf-wordpress
     restart: unless-stopped
     depends_on:

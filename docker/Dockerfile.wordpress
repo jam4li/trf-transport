@@ -1,12 +1,3 @@
 FROM wordpress:php8.1-apache
 
-# Trust (wp-warranty-check) is ionCube-encoded for PHP 8.1
-RUN set -eux; \
-    cd /tmp; \
-    curl -fsSL -o ioncube.tar.gz https://downloads.ioncube.com/loader_downloads/ioncube_loaders_lin_x86-64.tar.gz; \
-    tar -xzf ioncube.tar.gz; \
-    PHP_EXT_DIR="$(php -r 'echo ini_get("extension_dir");')"; \
-    cp ioncube/ioncube_loader_lin_8.1.so "$PHP_EXT_DIR/"; \
-    echo "zend_extension=$PHP_EXT_DIR/ioncube_loader_lin_8.1.so" > /usr/local/etc/php/conf.d/00-ioncube.ini; \
-    rm -rf /tmp/ioncube /tmp/ioncube.tar.gz; \
-    php -v | grep -i ionCube
+# Cargo tracking is a first-party plugin (trf-cargo-tracking); ionCube is not required.
