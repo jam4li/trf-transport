@@ -96,11 +96,6 @@
 	}
 
 	document.addEventListener("DOMContentLoaded", function () {
-		var countries = document.querySelector("[data-trf-tabs]");
-		if (countries) {
-			bindTablist(countries, "[data-trf-tab]", "[data-trf-panel]", "data-trf-tab", "data-trf-panel");
-		}
-
 		var agents = document.querySelector("[data-trf-agent-tabs]");
 		if (agents) {
 			var refresh = [];

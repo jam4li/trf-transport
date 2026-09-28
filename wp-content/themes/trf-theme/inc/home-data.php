@@ -41,27 +41,31 @@ function trf_home_services() {
 		array(
 			array(
 				'title' => 'حمل و نقل دریایی',
-				'text'  => 'حمل بار دریایی به تمامی بنادر دنیا در سریع ترین زمان ممکن',
+				'text'  => 'حمل بار دریایی به تمامی بنادر دنیا در سریع‌ترین زمان ممکن',
 				'slug'  => 'sea-transport',
 				'image' => 'img/service-sea.webp',
+				'icon'  => 'ship',
 			),
 			array(
-				'title' => 'حمل و نقل جاده ای',
-				'text'  => 'حمل بار جاده ای به کشورهای حوزه قفقاز و اروپا',
+				'title' => 'حمل و نقل جاده‌ای',
+				'text'  => 'حمل بار جاده‌ای به کشورهای حوزه قفقاز و اروپا',
 				'slug'  => 'road-transport',
 				'image' => 'img/service-road.webp',
+				'icon'  => 'truck',
 			),
 			array(
 				'title' => 'حمل و نقل ریلی',
 				'text'  => 'حمل بار با قطار به کشورهای آسیایی از طریق خطوط ریلی',
 				'slug'  => 'rail-transport',
 				'image' => 'img/service-rail.webp',
+				'icon'  => 'train',
 			),
 			array(
 				'title' => 'حمل و نقل هوایی',
 				'text'  => 'حمل بار سریع به تمامی فرودگاه‌های دنیا',
 				'slug'  => 'air-transport',
 				'image' => 'img/service-air.webp',
+				'icon'  => 'plane',
 			),
 		)
 	);
@@ -77,6 +81,7 @@ function trf_home_countries() {
 		array(
 				'slug'  => 'afghanistan',
 				'title' => 'افغانستان',
+				'lead'  => 'حمل بار میان ایران و افغانستان با پوشش لجستیک آسیای میانه',
 				'text'  => 'ما در شرکت حمل‌ونقل تراف به منظور جابه‌جایی و ارسال بار از ایران به افغانستان یا بالعکس نیز همراه شما هستیم. در امور مربوط به لجستیک، مهم‌ترین معیار انتخاب شرکت حمل‌ونقل، باتجربه و قابل اعتماد بودن شرکت مذکور است. تراف با سابقه‌ای طولانی مدت در زمینه حمل بار به افغانستان و دیگر کشورهای آسیای میانه و خاور دور، توانسته است اعتماد و نظر شمار زیادی از مشتریان خود را جلب کند.',
 				'page'  => 'transport-to-afghanistan',
 				'image' => 'img/countries/afghanistan.svg',
@@ -84,6 +89,7 @@ function trf_home_countries() {
 			array(
 				'slug'  => 'turkey',
 				'title' => 'ترکیه',
+				'lead'  => 'ارسال بار تجاری و شخصی به ترکیه با خدمات لجستیک کامل',
 				'text'  => 'یکی از خدمات شرکت بین المللی حمل‌ونقل تراف، حمل بار و ارائه خدمات لجستیک به مقصد ترکیه است. تمامی شرکت‌های بین‌المللی صادرات و واردات کالا، بازرگانی‌ها، عموم افراد به‌ویژه دانشجویان و… می‌توانند ارسال بار خود به مقصد کشور ترکیه را از طریق شرکت تراف انجام دهند.',
 				'page'  => 'transport-to-turkey',
 				'image' => 'img/countries/turkey.svg',
@@ -91,6 +97,7 @@ function trf_home_countries() {
 			array(
 				'slug'  => 'russia',
 				'title' => 'روسیه',
+				'lead'  => 'حمل هوایی و دریایی به روسیه با مسیرهای بهینه و هزینه شفاف',
 				'text'  => 'در شرکت بین‌المللی تراف با تکیه بر زیرساخت‌های خود و تلاش روزافزون پرسنل مجرب این شرکت، توانسته‌ایم به یکی از بهترین شرکت‌های حمل بار هوایی به روسیه، حمل بار دریایی و… تبدیل شویم. تراف همواره سعی کرده است با کاهش هزینه‌ها و ساده‌تر کردن فرایند جابه‌جایی داخلی و خارجی بار، یک سیستم اصولی لجستیک را طراحی و پیاده‌سازی کند.',
 				'page'  => 'transport-to-russia',
 				'image' => 'img/countries/russia.svg',
@@ -98,6 +105,7 @@ function trf_home_countries() {
 			array(
 				'slug'  => 'iraq',
 				'title' => 'عراق',
+				'lead'  => 'حمل کانتینری، خرده بار و خودرو به عراق با تضمین سلامت کالا',
 				'text'  => 'حمل بار به عراق با قیمتی مناسب و تضمین سلامت بار از مبدا ایران به مقصد کشور عراق از سوی شرکت بین المللی حمل‌ونقل تراف انجام می‌شود. انواع جابه‌جایی مانند حمل اثاثیه منزل، خودرو، حمل و نقل کانتینری، ارسال خرده بار و… از طریق تراف امکان‌پذیر است.',
 				'page'  => 'transport-to-middle-east',
 				'image' => 'img/countries/iraq.svg',
@@ -105,6 +113,7 @@ function trf_home_countries() {
 			array(
 				'slug'       => 'uae',
 				'title'      => 'امارات',
+				'lead'       => 'فریت بار و حمل تجاری به امارات از مسیر دریایی و هوایی',
 				'text'       => 'خدمات ارسال بار به امارات با تضمین قیمت و سلامت کالا حین تحویل را از شرکت بین‌المللی تراف دریافت کنید. ما در تراف با سابقه‌ای طولانی مدت در زمینه حمل بار دریایی و هوایی به کشور امارات، امکان حمل و نقل و ارسال بار به دو صورت فریت بار و تجاری را فراهم کرده‌ایم.',
 				'page'       => 'emirates',
 				'post_types' => array( 'foreign-agents', 'page' ),
@@ -114,6 +123,7 @@ function trf_home_countries() {
 			array(
 				'slug'  => 'armenia',
 				'title' => 'ارمنستان',
+				'lead'  => 'حمل بار به ایروان و نخجوان با بیمه‌نامه بین‌المللی',
 				'text'  => 'اگر به دنبال شرکتی معتبر در زمینه حمل بار به ارمنستان با ارائه بیمه نامه بین‌المللی هستید، شرکت حمل‌ونقل بین‌المللی تراف با قیمت مناسب یک انتخاب مناسب خواهد بود. تراف در کارنامه کاری خود سابقه خوبی در زمینه حمل بار به کشور ارمنستان و شهرهایی مانند ایروان، نخجوان و… را به ثبت رسانده است.',
 				'page'  => 'transport-to-asia',
 				'image' => 'img/countries/armenia.svg',
@@ -182,6 +192,87 @@ function trf_home_agents_foreign() {
 }
 
 /**
+ * Trust metrics strip.
+ *
+ * @return array<int, array{value:string,label:string}>
+ */
+function trf_home_stats() {
+	return array(
+		array(
+			'value' => '۲۰+',
+			'label' => 'سال سابقه تخصصی',
+		),
+		array(
+			'value' => '۴',
+			'label' => 'شیوه حمل بین‌المللی',
+		),
+		array(
+			'value' => '۱۳',
+			'label' => 'نماینده در ایران',
+		),
+		array(
+			'value' => '۸',
+			'label' => 'نماینده در خارج از کشور',
+		),
+	);
+}
+
+/**
+ * Quote-to-delivery steps.
+ *
+ * @return array<int, array{icon:string,title:string,text:string}>
+ */
+function trf_home_process() {
+	return array(
+		array(
+			'icon'  => 'file',
+			'title' => 'استعلام قیمت',
+			'text'  => 'مبدا، مقصد و نوع محموله را ثبت کنید تا پیشنهاد مسیر و هزینه برای شما آماده شود.',
+		),
+		array(
+			'icon'  => 'check',
+			'title' => 'بررسی و هماهنگی',
+			'text'  => 'مدارک، بسته‌بندی و زمان‌بندی با تیم عملیاتی هماهنگ می‌شود.',
+		),
+		array(
+			'icon'  => 'truck',
+			'title' => 'حمل و ترانزیت',
+			'text'  => 'بار از مسیر دریایی، جاده‌ای، ریلی یا هوایی با پوشش بیمه جابه‌جا می‌شود.',
+		),
+		array(
+			'icon'  => 'package',
+			'title' => 'تحویل در مقصد',
+			'text'  => 'کالا تا لحظه تحویل پیگیری می‌شود و سلامت محموله تضمین می‌گردد.',
+		),
+	);
+}
+
+/**
+ * About-section benefit cards.
+ *
+ * @return array<int, array{icon:string,title:string,text:string}>
+ */
+function trf_home_benefits() {
+	return array(
+		array(
+			'icon'  => 'badge',
+			'title' => 'مجوزهای قانونی',
+			'text'  => 'فعالیت با مجوزهای لازم برای حمل داخلی و بین‌المللی هوایی، دریایی و زمینی.',
+		),
+		array(
+			'icon'  => 'globe',
+			'title' => 'شبکه نمایندگان',
+			'text'  => 'نماینده در مرزها، بنادر و کشورهای مقصد برای پیگیری سریع‌تر محموله.',
+		),
+		array(
+			'icon'  => 'shield',
+			'title' => 'تضمین سلامت بار',
+			'text'  => 'پوشش بیمه و کنترل مسیر تا لحظه تحویل کالا در مقصد.',
+		),
+	);
+}
+
+/**
  * Latest posts for the homepage articles grid.
  *
  * @return WP_Query
@@ -190,7 +281,7 @@ function trf_home_articles_query() {
 	return new WP_Query(
 		array(
 			'post_type'           => 'post',
-			'posts_per_page'      => 4,
+			'posts_per_page'      => 3,
 			'ignore_sticky_posts' => true,
 			'no_found_rows'       => true,
 		)
@@ -204,7 +295,7 @@ function trf_home_articles_query() {
  */
 function trf_footer_services_fallback() {
 	return array(
-		array( 'label' => 'حمل و نقل جاده ای', 'url' => trf_permalink_for( 'road-transport' ) ),
+		array( 'label' => 'حمل و نقل جاده‌ای', 'url' => trf_permalink_for( 'road-transport' ) ),
 		array( 'label' => 'حمل و نقل دریایی', 'url' => trf_permalink_for( 'sea-transport' ) ),
 		array( 'label' => 'حمل و نقل ریلی', 'url' => trf_permalink_for( 'rail-transport' ) ),
 		array( 'label' => 'حمل و نقل هوایی', 'url' => trf_permalink_for( 'air-transport' ) ),

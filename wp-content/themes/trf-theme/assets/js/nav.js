@@ -1,7 +1,7 @@
 (function () {
 	"use strict";
 
-	var MQ = "(max-width: 74.99rem)";
+	var MQ = "(max-width: 84.99rem)";
 
 	document.addEventListener("DOMContentLoaded", function () {
 		var header = document.querySelector("[data-trf-header]");
@@ -12,6 +12,13 @@
 		}
 
 		var media = window.matchMedia(MQ);
+
+		function setScrolled() {
+			header.classList.toggle("is-scrolled", window.scrollY > 8);
+		}
+
+		setScrolled();
+		window.addEventListener("scroll", setScrolled, { passive: true });
 
 		function setOpen(open) {
 			header.classList.toggle("is-open", open);

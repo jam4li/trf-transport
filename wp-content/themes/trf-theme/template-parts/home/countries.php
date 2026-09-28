@@ -1,11 +1,11 @@
 <?php
 /**
- * Homepage country tabs.
+ * Homepage destination grid.
  *
  * @package trf-theme
  *
  * @var array $args {
- *     @type array $countries Country panels.
+ *     @type array $countries Country cards.
  * }
  */
 
@@ -15,55 +15,27 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $countries = isset( $args['countries'] ) ? $args['countries'] : array();
 ?>
-<section class="trf-section trf-countries" id="countries" data-trf-tabs>
+<section class="trf-section trf-countries" id="countries">
 	<div class="trf-container">
 		<header class="trf-section__head">
+			<p class="trf-eyebrow">مقاصد پرتردد</p>
 			<h2>حمل به کشورهای مختلف</h2>
-			<p>ما بیشتر به چه کشورهایی حمل می‌کنیم؟</p>
+			<p>مسیرهای فعال به همسایگان، آسیای میانه، خلیج فارس و اروپا.</p>
 		</header>
 
-		<div class="trf-tabs" role="tablist" aria-label="<?php esc_attr_e( 'کشورها', 'trf-theme' ); ?>">
-			<?php foreach ( $countries as $index => $country ) : ?>
+		<div class="trf-countries__grid">
+			<?php foreach ( $countries as $country ) : ?>
 				<?php
-				$tab_id   = 'trf-tab-' . $country['slug'];
-				$panel_id = 'trf-panel-' . $country['slug'];
+				$lead = ! empty( $country['lead'] ) ? $country['lead'] : wp_trim_words( $country['text'], 22, '…' );
 				?>
-				<button
-					type="button"
-					id="<?php echo esc_attr( $tab_id ); ?>"
-					class="trf-tabs__btn<?php echo 0 === $index ? ' is-active' : ''; ?>"
-					role="tab"
-					aria-selected="<?php echo 0 === $index ? 'true' : 'false'; ?>"
-					aria-controls="<?php echo esc_attr( $panel_id ); ?>"
-					tabindex="<?php echo 0 === $index ? '0' : '-1'; ?>"
-					data-trf-tab="<?php echo esc_attr( $country['slug'] ); ?>"
-				><?php echo esc_html( $country['title'] ); ?></button>
-			<?php endforeach; ?>
-		</div>
-
-		<div class="trf-countries__panels">
-			<?php foreach ( $countries as $index => $country ) : ?>
-				<?php
-				$tab_id   = 'trf-tab-' . $country['slug'];
-				$panel_id = 'trf-panel-' . $country['slug'];
-				?>
-				<article
-					id="<?php echo esc_attr( $panel_id ); ?>"
-					class="trf-country-panel<?php echo 0 === $index ? ' is-active' : ''; ?>"
-					role="tabpanel"
-					aria-labelledby="<?php echo esc_attr( $tab_id ); ?>"
-					data-trf-panel="<?php echo esc_attr( $country['slug'] ); ?>"
-					<?php echo 0 === $index ? '' : 'hidden'; ?>
-				>
-					<div class="trf-country-panel__media">
-						<img src="<?php echo esc_url( $country['image'] ); ?>" alt="<?php echo esc_attr( $country['title'] ); ?>" loading="lazy">
-					</div>
-					<div class="trf-country-panel__body">
-						<h3><?php echo esc_html( $country['title'] ); ?></h3>
-						<p><?php echo esc_html( $country['text'] ); ?></p>
-						<a class="trf-btn trf-btn--primary" href="<?php echo esc_url( $country['url'] ); ?>">اطلاعات بیشتر</a>
-					</div>
-				</article>
+				<a class="trf-destination-card" href="<?php echo esc_url( $country['url'] ); ?>">
+					<span class="trf-destination-card__flag">
+						<img src="<?php echo esc_url( $country['image'] ); ?>" alt="" width="96" height="64" loading="lazy" decoding="async">
+					</span>
+					<h3><?php echo esc_html( $country['title'] ); ?></h3>
+					<p><?php echo esc_html( $lead ); ?></p>
+					<span class="trf-destination-card__more">جزئیات مسیر <?php echo trf_icon( 'arrow' ); ?></span>
+				</a>
 			<?php endforeach; ?>
 		</div>
 	</div>

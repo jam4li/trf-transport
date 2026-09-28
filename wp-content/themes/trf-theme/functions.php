@@ -9,12 +9,13 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TRF_THEME_VERSION', '1.7.1' );
+define( 'TRF_THEME_VERSION', '1.8.7' );
 define( 'TRF_THEME_DIR', get_template_directory() );
 define( 'TRF_THEME_URI', get_template_directory_uri() );
 
 $trf_includes = array(
 	'helpers.php',
+	'icons.php',
 	'setup.php',
 	'assets.php',
 	'customizer.php',

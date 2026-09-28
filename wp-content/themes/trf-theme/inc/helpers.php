@@ -26,12 +26,9 @@ function trf_asset( $path ) {
  */
 function trf_theme_defaults() {
 	return array(
-		'trf_phone'           => '۰۵۱-۳۷۷۶۲۶۲۶',
-		'trf_phone_tel'       => '05137762626',
-		'trf_social_telegram' => 'https://t.me/',
-		'trf_social_twitter'  => 'https://twitter.com/',
-		'trf_social_youtube'  => 'https://www.youtube.com/',
-		'trf_tracking_slug'   => 'tracking',
+		'trf_phone'         => '۰۵۱-۳۷۷۶۲۶۲۶',
+		'trf_phone_tel'     => '05137762626',
+		'trf_tracking_slug' => 'tracking',
 		'trf_contact_slug'    => 'contact-us',
 		'trf_footer_blurb'    => 'شرکت باربری و حمل‌ونقل تراف با بیش از ۲۰ سال سابقه تخصصی در زمینه لجستیک؛ حمل بار هوایی، زمینی و دریایی فعالیت می‌کند.',
 		'trf_quote_email'     => '',
@@ -106,6 +103,22 @@ function trf_tracking_url() {
  */
 function trf_quote_cta_url() {
 	return '#quote';
+}
+
+/**
+ * Posts / news archive URL.
+ *
+ * @return string
+ */
+function trf_news_url() {
+	$page_id = (int) get_option( 'page_for_posts' );
+	if ( $page_id ) {
+		return get_permalink( $page_id );
+	}
+
+	$link = get_post_type_archive_link( 'post' );
+
+	return $link ? $link : home_url( '/' );
 }
 
 /**

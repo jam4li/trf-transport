@@ -14,13 +14,6 @@
 	<div class="trf-container trf-header__inner">
 		<?php trf_the_logo(); ?>
 
-		<button class="trf-nav-toggle" type="button" aria-expanded="false" aria-controls="trf-primary-nav" data-trf-nav-toggle>
-			<span class="screen-reader-text"><?php esc_html_e( 'منو', 'trf-theme' ); ?></span>
-			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
-			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
-			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
-		</button>
-
 		<nav id="trf-primary-nav" class="trf-nav" aria-label="<?php esc_attr_e( 'منوی اصلی', 'trf-theme' ); ?>" data-trf-nav>
 			<?php
 			wp_nav_menu(
@@ -38,8 +31,20 @@
 			</a>
 		</nav>
 
+		<a class="trf-header__phone" href="<?php echo esc_url( 'tel:' . trf_mod( 'trf_phone_tel' ) ); ?>" aria-label="<?php echo esc_attr( sprintf( /* translators: %s: phone number */ __( 'تماس: %s', 'trf-theme' ), trf_mod( 'trf_phone' ) ) ); ?>">
+			<?php echo trf_icon( 'phone' ); ?>
+			<span class="trf-header__phone-num"><?php echo esc_html( trf_mod( 'trf_phone' ) ); ?></span>
+		</a>
+
 		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>" data-trf-quote-open>
 			<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
 		</a>
+
+		<button class="trf-nav-toggle" type="button" aria-expanded="false" aria-controls="trf-primary-nav" data-trf-nav-toggle>
+			<span class="screen-reader-text"><?php esc_html_e( 'منو', 'trf-theme' ); ?></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+		</button>
 	</div>
 </header>

@@ -24,8 +24,9 @@ $agent_groups    = array(
 <section class="trf-section trf-agents" id="agents" data-trf-agent-tabs>
 	<div class="trf-container">
 		<header class="trf-section__head">
-			<h2>نمایندگان شرکت حمل و نقل بین المللی تراف</h2>
-			<p>ما در تمامی شهرهای ایران و اکثر کشورها نماینده داریم</p>
+			<p class="trf-eyebrow">شبکه نمایندگان</p>
+			<h2>نمایندگان تراف در ایران و جهان</h2>
+			<p>حضور در مرزها، بنادر و شهرهای کلیدی برای پیگیری سریع‌تر محموله.</p>
 		</header>
 
 		<div class="trf-tabs trf-tabs--agents" role="tablist" aria-label="<?php esc_attr_e( 'نمایندگان', 'trf-theme' ); ?>">
@@ -43,19 +44,19 @@ $agent_groups    = array(
 				data-trf-agent-panel="<?php echo esc_attr( $group ); ?>"
 				<?php echo 'domestic' === $group ? '' : 'hidden'; ?>
 			>
-				<button class="trf-agents__nav trf-agents__nav--prev" type="button" data-trf-agents-prev aria-label="<?php esc_attr_e( 'قبلی', 'trf-theme' ); ?>">‹</button>
+				<button class="trf-agents__nav trf-agents__nav--prev" type="button" data-trf-agents-prev aria-label="<?php esc_attr_e( 'قبلی', 'trf-theme' ); ?>"><?php echo trf_icon( 'arrow' ); ?></button>
 				<div class="trf-agents__track" data-trf-agents-track>
 					<?php foreach ( $list as $agent ) : ?>
 						<article class="trf-agent-card">
-							<img src="<?php echo esc_url( trf_asset( 'img/' . $agent[2] ) ); ?>" alt="<?php echo esc_attr( $agent[0] ); ?>" loading="lazy">
+							<img src="<?php echo esc_url( trf_asset( 'img/' . $agent[2] ) ); ?>" alt="" width="400" height="275" loading="lazy" decoding="async">
 							<div class="trf-agent-card__body">
-								<h3><?php echo esc_html( $agent[0] ); ?></h3>
+								<h3><?php echo trf_icon( 'pin' ); ?><?php echo esc_html( $agent[0] ); ?></h3>
 								<p><?php echo esc_html( $agent[1] ); ?></p>
 							</div>
 						</article>
 					<?php endforeach; ?>
 				</div>
-				<button class="trf-agents__nav trf-agents__nav--next" type="button" data-trf-agents-next aria-label="<?php esc_attr_e( 'بعدی', 'trf-theme' ); ?>">›</button>
+				<button class="trf-agents__nav trf-agents__nav--next" type="button" data-trf-agents-next aria-label="<?php esc_attr_e( 'بعدی', 'trf-theme' ); ?>"><?php echo trf_icon( 'arrow' ); ?></button>
 			</div>
 		<?php endforeach; ?>
 	</div>
