@@ -39,6 +39,24 @@ function trf_theme_setup() {
 add_action( 'after_setup_theme', 'trf_theme_setup' );
 
 /**
+ * Drop retired Customizer social URL mods (Telegram, Twitter, YouTube).
+ */
+function trf_remove_retired_social_mods() {
+	$retired = array( 'trf_social_telegram', 'trf_social_twitter', 'trf_social_youtube' );
+	$mods    = get_theme_mods();
+	if ( ! is_array( $mods ) ) {
+		return;
+	}
+
+	foreach ( $retired as $key ) {
+		if ( isset( $mods[ $key ] ) ) {
+			remove_theme_mod( $key );
+		}
+	}
+}
+add_action( 'after_setup_theme', 'trf_remove_retired_social_mods' );
+
+/**
  * Assign the existing "main" menu to the primary location once, on theme switch.
  */
 function trf_assign_primary_menu() {

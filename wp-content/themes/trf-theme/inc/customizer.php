@@ -1,6 +1,6 @@
 <?php
 /**
- * Theme Customizer: phone, socials, tracking, footer copy, quote recipient.
+ * Theme Customizer: phone, tracking, footer copy, quote recipient.
  *
  * @package trf-theme
  */
@@ -33,18 +33,6 @@ function trf_customize_register( $wp_customize ) {
 		'trf_phone_tel'       => array(
 			'label' => __( 'Phone (tel: link)', 'trf-theme' ),
 			'type'  => 'text',
-		),
-		'trf_social_telegram' => array(
-			'label' => __( 'Telegram URL', 'trf-theme' ),
-			'type'  => 'url',
-		),
-		'trf_social_twitter'  => array(
-			'label' => __( 'X / Twitter URL', 'trf-theme' ),
-			'type'  => 'url',
-		),
-		'trf_social_youtube'  => array(
-			'label' => __( 'YouTube URL', 'trf-theme' ),
-			'type'  => 'url',
 		),
 		'trf_tracking_slug'   => array(
 			'label'       => __( 'Tracking page slug', 'trf-theme' ),

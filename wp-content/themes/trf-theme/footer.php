@@ -7,22 +7,10 @@
 
 $trf_phone     = trf_mod( 'trf_phone' );
 $trf_phone_tel = trf_mod( 'trf_phone_tel' );
-$trf_socials   = array(
-	array( 'label' => 'Telegram', 'url' => trf_mod( 'trf_social_telegram' ) ),
-	array( 'label' => 'Twitter', 'url' => trf_mod( 'trf_social_twitter' ) ),
-	array( 'label' => 'Youtube', 'url' => trf_mod( 'trf_social_youtube' ) ),
-);
 ?>
 <footer class="trf-footer">
 	<div class="trf-container trf-footer__top">
 		<a class="trf-footer__phone" href="<?php echo esc_url( 'tel:' . $trf_phone_tel ); ?>"><?php echo esc_html( $trf_phone ); ?></a>
-		<div class="trf-footer__social" aria-label="<?php esc_attr_e( 'شبکه‌های اجتماعی', 'trf-theme' ); ?>">
-			<?php foreach ( $trf_socials as $trf_social ) : ?>
-				<?php if ( $trf_social['url'] ) : ?>
-					<a href="<?php echo esc_url( $trf_social['url'] ); ?>" target="_blank" rel="noopener noreferrer"><?php echo esc_html( $trf_social['label'] ); ?></a>
-				<?php endif; ?>
-			<?php endforeach; ?>
-		</div>
 	</div>
 
 	<div class="trf-container trf-footer__grid">
