@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TRF_THEME_VERSION', '1.4.0' );
+define( 'TRF_THEME_VERSION', '1.5.0' );
 define( 'TRF_THEME_DIR', get_template_directory() );
 define( 'TRF_THEME_URI', get_template_directory_uri() );
 
@@ -19,7 +19,6 @@ $trf_includes = array(
 	'assets.php',
 	'customizer.php',
 	'home-data.php',
-	'elementor.php',
 	'quote.php',
 );
 

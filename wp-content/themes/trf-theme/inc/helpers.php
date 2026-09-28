@@ -20,21 +20,6 @@ function trf_asset( $path ) {
 }
 
 /**
- * Whether the current singular page is built with Elementor.
- *
- * @param int $post_id Post ID.
- * @return bool
- */
-function trf_is_elementor_page( $post_id = 0 ) {
-	$post_id = $post_id ? (int) $post_id : get_queried_object_id();
-	if ( ! $post_id ) {
-		return false;
-	}
-
-	return (bool) get_post_meta( $post_id, '_elementor_edit_mode', true );
-}
-
-/**
  * Default theme_mod values.
  *
  * @return array<string, string>

@@ -22,29 +22,6 @@ class TRF_Cargo_Tracking_Frontend {
 		add_shortcode( 'validation_check_lookup', [ __CLASS__, 'shortcode' ] );
 		add_action( 'wp_enqueue_scripts', [ __CLASS__, 'register_assets' ] );
 		add_filter( 'the_content', [ __CLASS__, 'maybe_append_to_tracking_page' ] );
-		add_filter( 'elementor/widget/render_content', [ __CLASS__, 'expand_shortcode_in_elementor' ], 10, 1 );
-	}
-
-	/**
-	 * Expand leftover shortcode text in any Elementor widget.
-	 *
-	 * @param string $content Widget HTML.
-	 * @return string
-	 */
-	public static function expand_shortcode_in_elementor( $content ) {
-		if ( ! is_string( $content ) || false === strpos( $content, '[' ) ) {
-			return $content;
-		}
-
-		if ( false === strpos( $content, '[validation_check_lookup]' ) && false === strpos( $content, '[trf_cargo_tracking]' ) ) {
-			return $content;
-		}
-
-		return str_replace(
-			array( '[validation_check_lookup]', '[trf_cargo_tracking]' ),
-			self::shortcode(),
-			$content
-		);
 	}
 
 	/**
@@ -102,17 +79,12 @@ class TRF_Cargo_Tracking_Frontend {
 
 	/**
 	 * On the published tracking page, show the form when the shortcode is missing.
-	 * Skips Elementor canvases so an existing shortcode widget is not duplicated.
 	 *
 	 * @param string $content Post content.
 	 * @return string
 	 */
 	public static function maybe_append_to_tracking_page( $content ) {
 		if ( ! is_singular( 'page' ) || ! in_the_loop() || ! is_main_query() ) {
-			return $content;
-		}
-
-		if ( function_exists( 'trf_is_elementor_page' ) && trf_is_elementor_page() ) {
 			return $content;
 		}
 
