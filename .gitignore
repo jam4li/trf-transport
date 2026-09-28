@@ -57,7 +57,7 @@ debug.log
 # ----- Plugins: ignore third-party; keep custom plugins only -----
 /wp-content/plugins/*
 !/wp-content/plugins/index.php
-!/wp-content/plugins/wp-warranty-check/
+!/wp-content/plugins/trf-cargo-tracking/
 
 # ----- Archives / dumps -----
 *.sql
@@ -67,6 +67,10 @@ debug.log
 *.zip
 *.rar
 *.7z
+
+# ----- Saved Elementor homepage dump (browser "Save page as") -----
+/index.html
+/index_files/
 
 # ----- Host / ACME -----
 .well-known/

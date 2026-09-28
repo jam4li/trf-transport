@@ -1,0 +1,135 @@
+.trf-track {
+	--trf-accent: #bd6b00;
+	--trf-accent-dark: #944f00;
+	--trf-ink: #1a1a1a;
+	--trf-muted: #5c5c5c;
+	--trf-line: #e6e6e6;
+	--trf-surface: #f7f5f2;
+	--trf-white: #ffffff;
+	--trf-radius: 14px;
+	--trf-shadow: 0 12px 40px rgba(0, 0, 0, 0.12);
+	max-width: 42rem;
+	margin: 1.5rem auto;
+	direction: rtl;
+	text-align: right;
+	color: var(--trf-ink);
+}
+
+.trf-track__label {
+	display: block;
+	font-weight: 700;
+	margin-bottom: 0.6rem;
+}
+
+.trf-track__row {
+	display: flex;
+	gap: 0.75rem;
+	flex-wrap: wrap;
+}
+
+.trf-track__input {
+	flex: 1 1 16rem;
+	min-height: 48px;
+	padding: 0.7rem 0.9rem;
+	border: 1px solid var(--trf-line);
+	border-radius: 999px;
+	font: inherit;
+	background: var(--trf-white);
+}
+
+.trf-track__input:focus-visible,
+.trf-track__submit:focus-visible {
+	outline: 2px solid var(--trf-accent);
+	outline-offset: 2px;
+}
+
+.trf-track__submit {
+	flex: 0 0 auto;
+}
+
+.trf-track .trf-btn {
+	display: inline-flex;
+	align-items: center;
+	justify-content: center;
+	gap: 0.5rem;
+	min-height: 48px;
+	padding: 0.7rem 1.4rem;
+	border-radius: 999px;
+	border: 1px solid transparent;
+	font-weight: 700;
+	cursor: pointer;
+	font-family: inherit;
+}
+
+.trf-track .trf-btn--primary {
+	background: var(--trf-accent);
+	color: var(--trf-white);
+}
+
+.trf-track .trf-btn--primary:hover {
+	background: var(--trf-accent-dark);
+}
+
+.trf-track__result {
+	margin-top: 1.25rem;
+}
+
+.trf-track__notice {
+	margin: 0;
+	padding: 0.75rem 1rem;
+	border-radius: 10px;
+}
+
+.trf-track__notice--error {
+	background: #fdecec;
+	color: #8a1f1f;
+}
+
+.trf-track__notice--busy {
+	background: var(--trf-surface);
+	color: var(--trf-muted);
+}
+
+.trf-track__card {
+	padding: 1.25rem 1.4rem;
+	background: var(--trf-surface);
+	border-radius: var(--trf-radius);
+	box-shadow: var(--trf-shadow);
+}
+
+.trf-track__code {
+	margin: 0 0 0.85rem;
+	font-weight: 700;
+}
+
+.trf-track__code span {
+	color: var(--trf-muted);
+	font-weight: 400;
+}
+
+.trf-track__description {
+	white-space: pre-wrap;
+	line-height: 1.8;
+}
+
+.trf-track__gallery {
+	display: grid;
+	grid-template-columns: repeat(auto-fit, minmax(140px, 1fr));
+	gap: 0.75rem;
+	margin-top: 1rem;
+}
+
+.trf-track__gallery a {
+	display: block;
+	border-radius: 10px;
+	overflow: hidden;
+	background: var(--trf-white);
+	border: 1px solid var(--trf-line);
+}
+
+.trf-track__gallery img {
+	width: 100%;
+	height: 180px;
+	object-fit: contain;
+	display: block;
+}

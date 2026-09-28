@@ -1,0 +1,50 @@
+.trf-track-gallery-field {
+	max-width: 640px;
+}
+
+.trf-track-gallery-preview {
+	display: flex;
+	flex-wrap: wrap;
+	gap: 12px;
+	margin: 10px 0;
+	min-height: 24px;
+}
+
+.trf-track-gallery-item {
+	position: relative;
+	width: 110px;
+	height: 110px;
+	border: 1px solid #c3c4c7;
+	border-radius: 4px;
+	overflow: hidden;
+	background: #f6f7f7;
+}
+
+.trf-track-gallery-item img {
+	width: 100%;
+	height: 100%;
+	object-fit: cover;
+	display: block;
+}
+
+.trf-track-gallery-remove {
+	position: absolute;
+	top: 2px;
+	left: 2px;
+	width: 24px;
+	height: 24px;
+	border: 0;
+	border-radius: 50%;
+	background: rgba(0, 0, 0, 0.65);
+	color: #fff !important;
+	font-size: 16px;
+	line-height: 22px;
+	text-align: center;
+	cursor: pointer;
+	text-decoration: none !important;
+}
+
+.trf-track-admin-form .ltr {
+	direction: ltr;
+	text-align: left;
+}
