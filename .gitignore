@@ -50,6 +50,7 @@ debug.log
 # ----- Themes: ignore stock; keep only custom/child themes -----
 /wp-content/themes/*
 !/wp-content/themes/index.php
+!/wp-content/themes/trf-theme/
 # Uncomment the next line if you customize Hello Elementor and need it in git:
 # !/wp-content/themes/hello-elementor/
 
@@ -81,3 +82,6 @@ node_modules/
 npm-debug.log*
 yarn-error.log*
 vendor/
+
+# Docker local data (named volumes are preferred; ignore bind-mount data if added)
+.env
