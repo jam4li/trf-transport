@@ -1,0 +1,44 @@
+<!DOCTYPE html>
+<html <?php language_attributes(); ?> dir="rtl">
+<head>
+	<meta charset="<?php bloginfo( 'charset' ); ?>">
+	<meta name="viewport" content="width=device-width, initial-scale=1">
+	<?php wp_head(); ?>
+</head>
+<body <?php body_class( 'trf-theme' ); ?>>
+<?php wp_body_open(); ?>
+
+<a class="skip-link screen-reader-text" href="#content"><?php esc_html_e( 'پرش به محتوا', 'trf-theme' ); ?></a>
+
+<header class="trf-header" data-trf-header>
+	<div class="trf-container trf-header__inner">
+		<a class="trf-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
+			<img src="<?php echo esc_url( trf_asset( 'img/logo.png' ) ); ?>" width="180" height="56" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
+		</a>
+
+		<button class="trf-nav-toggle" type="button" aria-expanded="false" aria-controls="trf-primary-nav" data-trf-nav-toggle>
+			<span class="screen-reader-text"><?php esc_html_e( 'منو', 'trf-theme' ); ?></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+			<span class="trf-nav-toggle__bar" aria-hidden="true"></span>
+		</button>
+
+		<nav id="trf-primary-nav" class="trf-nav" aria-label="<?php esc_attr_e( 'منوی اصلی', 'trf-theme' ); ?>" data-trf-nav>
+			<?php
+			wp_nav_menu(
+				array(
+					'theme_location' => 'primary',
+					'container'      => false,
+					'menu_class'     => 'trf-nav__list',
+					'depth'          => 2,
+					'fallback_cb'    => false,
+				)
+			);
+			?>
+		</nav>
+
+		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( is_front_page() ? '#quote' : home_url( '/contact-us/' ) ); ?>">
+			<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
+		</a>
+	</div>
+</header>
