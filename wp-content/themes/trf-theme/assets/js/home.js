@@ -1,32 +1,54 @@
 (function () {
 	"use strict";
 
-	function initCountryTabs() {
-		var root = document.querySelector("[data-trf-tabs]");
-		if (!root) {
+	function activateTab(buttons, panels, idAttr, panelAttr, targetId) {
+		buttons.forEach(function (btn) {
+			var active = btn.getAttribute(idAttr) === targetId;
+			btn.classList.toggle("is-active", active);
+			btn.setAttribute("aria-selected", active ? "true" : "false");
+			btn.setAttribute("tabindex", active ? "0" : "-1");
+		});
+		panels.forEach(function (panel) {
+			var match = panel.getAttribute(panelAttr) === targetId;
+			panel.classList.toggle("is-active", match);
+			if (match) {
+				panel.removeAttribute("hidden");
+			} else {
+				panel.setAttribute("hidden", "");
+			}
+		});
+	}
+
+	function bindTablist(root, buttonSel, panelSel, idAttr, panelAttr) {
+		var buttons = Array.prototype.slice.call(root.querySelectorAll(buttonSel));
+		var panels = Array.prototype.slice.call(root.querySelectorAll(panelSel));
+		if (!buttons.length) {
 			return;
 		}
 
-		var buttons = root.querySelectorAll("[data-trf-tab]");
-		var panels = root.querySelectorAll("[data-trf-panel]");
-
 		buttons.forEach(function (btn) {
 			btn.addEventListener("click", function () {
-				var id = btn.getAttribute("data-trf-tab");
-				buttons.forEach(function (b) {
-					var active = b === btn;
-					b.classList.toggle("is-active", active);
-					b.setAttribute("aria-selected", active ? "true" : "false");
-				});
-				panels.forEach(function (panel) {
-					var match = panel.getAttribute("data-trf-panel") === id;
-					panel.classList.toggle("is-active", match);
-					if (match) {
-						panel.removeAttribute("hidden");
-					} else {
-						panel.setAttribute("hidden", "");
-					}
-				});
+				activateTab(buttons, panels, idAttr, panelAttr, btn.getAttribute(idAttr));
+			});
+
+			btn.addEventListener("keydown", function (event) {
+				var rtl = document.documentElement.getAttribute("dir") === "rtl";
+				var next = rtl ? -1 : 1;
+				var keys = { ArrowRight: next, ArrowLeft: -next, Home: "home", End: "end" };
+				if (!keys[event.key]) {
+					return;
+				}
+				event.preventDefault();
+				var index = buttons.indexOf(btn);
+				if (event.key === "Home") {
+					index = 0;
+				} else if (event.key === "End") {
+					index = buttons.length - 1;
+				} else {
+					index = (index + keys[event.key] + buttons.length) % buttons.length;
+				}
+				buttons[index].focus();
+				activateTab(buttons, panels, idAttr, panelAttr, buttons[index].getAttribute(idAttr));
 			});
 		});
 	}
@@ -58,42 +80,16 @@
 		});
 	}
 
-	function initAgentTabs() {
-		var root = document.querySelector("[data-trf-agent-tabs]");
-		if (!root) {
-			return;
+	document.addEventListener("DOMContentLoaded", function () {
+		var countries = document.querySelector("[data-trf-tabs]");
+		if (countries) {
+			bindTablist(countries, "[data-trf-tab]", "[data-trf-panel]", "data-trf-tab", "data-trf-panel");
 		}
 
-		var buttons = root.querySelectorAll("[data-trf-agent-tab]");
-		var panels = root.querySelectorAll("[data-trf-agent-panel]");
-
-		panels.forEach(function (panel) {
-			initAgentCarousel(panel);
-		});
-
-		buttons.forEach(function (btn) {
-			btn.addEventListener("click", function () {
-				var id = btn.getAttribute("data-trf-agent-tab");
-				buttons.forEach(function (b) {
-					var active = b === btn;
-					b.classList.toggle("is-active", active);
-					b.setAttribute("aria-selected", active ? "true" : "false");
-				});
-				panels.forEach(function (panel) {
-					var match = panel.getAttribute("data-trf-agent-panel") === id;
-					panel.classList.toggle("is-active", match);
-					if (match) {
-						panel.removeAttribute("hidden");
-					} else {
-						panel.setAttribute("hidden", "");
-					}
-				});
-			});
-		});
-	}
-
-	document.addEventListener("DOMContentLoaded", function () {
-		initCountryTabs();
-		initAgentTabs();
+		var agents = document.querySelector("[data-trf-agent-tabs]");
+		if (agents) {
+			bindTablist(agents, "[data-trf-agent-tab]", "[data-trf-agent-panel]", "data-trf-agent-tab", "data-trf-agent-panel");
+			agents.querySelectorAll("[data-trf-agent-panel]").forEach(initAgentCarousel);
+		}
 	});
 })();

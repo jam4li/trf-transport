@@ -14,12 +14,14 @@
 			toggle.setAttribute("aria-expanded", open ? "true" : "false");
 		});
 
-		nav.querySelectorAll(".menu-item-has-children > a").forEach(function (link) {
-			link.addEventListener("click", function (event) {
-				if (window.matchMedia("(max-width: 980px)").matches) {
-					event.preventDefault();
-					link.parentElement.classList.toggle("is-open");
+		nav.querySelectorAll(".trf-nav__sub-toggle").forEach(function (btn) {
+			btn.addEventListener("click", function () {
+				var item = btn.closest(".menu-item-has-children");
+				if (!item) {
+					return;
 				}
+				var open = item.classList.toggle("is-open");
+				btn.setAttribute("aria-expanded", open ? "true" : "false");
 			});
 		});
 	});

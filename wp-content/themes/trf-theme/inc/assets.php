@@ -1,0 +1,47 @@
+<?php
+/**
+ * Front-end assets.
+ *
+ * @package trf-theme
+ */
+
+if ( ! defined( 'ABSPATH' ) ) {
+	exit;
+}
+
+/**
+ * Enqueue scripts and styles.
+ */
+function trf_theme_assets() {
+	wp_enqueue_style(
+		'trf-theme-base',
+		TRF_THEME_URI . '/assets/css/base.css',
+		array(),
+		TRF_THEME_VERSION
+	);
+
+	wp_enqueue_script(
+		'trf-theme-nav',
+		TRF_THEME_URI . '/assets/js/nav.js',
+		array(),
+		TRF_THEME_VERSION,
+		true
+	);
+
+	if ( is_front_page() ) {
+		wp_enqueue_style(
+			'trf-theme-home',
+			TRF_THEME_URI . '/assets/css/home.css',
+			array( 'trf-theme-base' ),
+			TRF_THEME_VERSION
+		);
+		wp_enqueue_script(
+			'trf-theme-home',
+			TRF_THEME_URI . '/assets/js/home.js',
+			array(),
+			TRF_THEME_VERSION,
+			true
+		);
+	}
+}
+add_action( 'wp_enqueue_scripts', 'trf_theme_assets' );

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html <?php language_attributes(); ?> dir="rtl">
+<html <?php language_attributes(); ?>>
 <head>
 	<meta charset="<?php bloginfo( 'charset' ); ?>">
 	<meta name="viewport" content="width=device-width, initial-scale=1">
@@ -12,9 +12,7 @@
 
 <header class="trf-header" data-trf-header>
 	<div class="trf-container trf-header__inner">
-		<a class="trf-logo" href="<?php echo esc_url( home_url( '/' ) ); ?>">
-			<img src="<?php echo esc_url( trf_asset( 'img/logo.png' ) ); ?>" width="180" height="56" alt="<?php echo esc_attr( get_bloginfo( 'name' ) ); ?>">
-		</a>
+		<?php trf_the_logo(); ?>
 
 		<button class="trf-nav-toggle" type="button" aria-expanded="false" aria-controls="trf-primary-nav" data-trf-nav-toggle>
 			<span class="screen-reader-text"><?php esc_html_e( 'منو', 'trf-theme' ); ?></span>
@@ -35,9 +33,12 @@
 				)
 			);
 			?>
+			<a class="trf-btn trf-btn--primary trf-nav__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>">
+				<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
+			</a>
 		</nav>
 
-		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( is_front_page() ? '#quote' : home_url( '/contact-us/' ) ); ?>">
+		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>">
 			<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
 		</a>
 	</div>

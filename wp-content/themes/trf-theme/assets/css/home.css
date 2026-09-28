@@ -374,66 +374,6 @@
 	font-size: 0.82rem;
 }
 
-/* Footer extras */
-.trf-footer__top {
-	display: flex;
-	justify-content: space-between;
-	align-items: center;
-	gap: 1rem;
-	padding: 1.25rem 0 0.25rem;
-	flex-wrap: wrap;
-}
-
-.trf-footer__phone {
-	font-size: 1.35rem;
-	font-weight: 700;
-	color: var(--trf-white);
-}
-
-.trf-footer__social {
-	display: flex;
-	gap: 0.85rem;
-}
-
-.trf-footer__social a {
-	color: rgba(255, 255, 255, 0.8);
-	font-size: 0.9rem;
-}
-
-.trf-footer__social a:hover {
-	color: var(--trf-accent);
-}
-
-.trf-footer__grid {
-	grid-template-columns: 1.3fr 0.9fr 1fr 1.2fr;
-}
-
-.trf-quote-form {
-	display: grid;
-	gap: 0.65rem;
-}
-
-.trf-quote-form input,
-.trf-quote-form textarea {
-	width: 100%;
-	border: 1px solid rgba(255, 255, 255, 0.18);
-	background: rgba(255, 255, 255, 0.06);
-	color: var(--trf-white);
-	border-radius: 10px;
-	padding: 0.7rem 0.85rem;
-	font-family: inherit;
-	font-size: 0.92rem;
-}
-
-.trf-quote-form input::placeholder,
-.trf-quote-form textarea::placeholder {
-	color: rgba(255, 255, 255, 0.55);
-}
-
-.trf-quote-form .trf-btn {
-	justify-self: start;
-}
-
 @media (max-width: 1100px) {
 	.trf-services__grid,
 	.trf-articles__grid {

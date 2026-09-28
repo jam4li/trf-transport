@@ -66,16 +66,26 @@ a {
 	text-decoration: none;
 }
 
-ul {
+.trf-header ul,
+.trf-footer ul,
+.trf-home ul {
 	margin: 0;
 	padding: 0;
 	list-style: none;
 }
 
-h1,
-h2,
-h3,
-p {
+.trf-header h1,
+.trf-header h2,
+.trf-header h3,
+.trf-header p,
+.trf-footer h1,
+.trf-footer h2,
+.trf-footer h3,
+.trf-footer p,
+.trf-home h1,
+.trf-home h2,
+.trf-home h3,
+.trf-home p {
 	margin: 0;
 }
 
@@ -107,6 +117,19 @@ p {
 	padding: 0.75rem 1rem;
 	background: var(--trf-accent);
 	color: var(--trf-white);
+}
+
+.trf-btn:focus-visible,
+.trf-tabs__btn:focus-visible,
+.trf-nav__list a:focus-visible,
+.trf-nav-toggle:focus-visible,
+.trf-nav__sub-toggle:focus-visible,
+.trf-quote-form input:focus-visible,
+.trf-quote-form textarea:focus-visible,
+.trf-agents__nav:focus-visible,
+.trf-footer a:focus-visible {
+	outline: 2px solid var(--trf-accent);
+	outline-offset: 2px;
 }
 
 .trf-btn {
@@ -188,9 +211,39 @@ p {
 	font-size: 0.88rem;
 }
 
-.trf-logo img {
+.trf-logo img,
+.trf-logo .custom-logo {
 	width: 150px;
 	height: auto;
+}
+
+.trf-logo .custom-logo-link {
+	display: inline-block;
+}
+
+.trf-nav__cta {
+	display: none;
+}
+
+.trf-nav__sub-toggle {
+	display: none;
+	width: 40px;
+	height: 40px;
+	border: 0;
+	background: transparent;
+	cursor: pointer;
+	color: var(--trf-ink);
+	font-size: 1.15rem;
+	line-height: 1;
+	flex-shrink: 0;
+}
+
+.trf-honeypot {
+	position: absolute;
+	left: -9999px;
+	width: 1px;
+	height: 1px;
+	overflow: hidden;
 }
 
 .trf-nav-toggle {
@@ -311,14 +364,80 @@ p {
 	color: var(--trf-accent);
 }
 
-.trf-footer__phone {
-	margin-top: 1rem;
-	font-size: 1.15rem !important;
-	font-weight: 700;
+.trf-footer__top {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+	gap: 1rem;
+	padding: 1.25rem 0 0.25rem;
+	flex-wrap: wrap;
 }
 
-.trf-footer__phone a {
+.trf-footer__phone {
+	font-size: 1.35rem;
+	font-weight: 700;
 	color: var(--trf-white);
+}
+
+.trf-footer__social {
+	display: flex;
+	gap: 0.85rem;
+}
+
+.trf-footer__social a {
+	color: rgba(255, 255, 255, 0.8);
+	font-size: 0.9rem;
+}
+
+.trf-footer__social a:hover {
+	color: var(--trf-accent);
+}
+
+.trf-footer__grid {
+	grid-template-columns: 1.3fr 0.9fr 1fr 1.2fr;
+}
+
+.trf-quote-form {
+	display: grid;
+	gap: 0.65rem;
+}
+
+.trf-quote-form input,
+.trf-quote-form textarea {
+	width: 100%;
+	border: 1px solid rgba(255, 255, 255, 0.18);
+	background: rgba(255, 255, 255, 0.06);
+	color: var(--trf-white);
+	border-radius: 10px;
+	padding: 0.7rem 0.85rem;
+	font-family: inherit;
+	font-size: 0.92rem;
+}
+
+.trf-quote-form input::placeholder,
+.trf-quote-form textarea::placeholder {
+	color: rgba(255, 255, 255, 0.55);
+}
+
+.trf-quote-form .trf-btn {
+	justify-self: start;
+}
+
+.trf-quote-notice {
+	margin: 0 0 0.75rem;
+	padding: 0.65rem 0.85rem;
+	border-radius: 10px;
+	font-size: 0.9rem;
+}
+
+.trf-quote-notice--success {
+	background: rgba(46, 160, 67, 0.2);
+	color: #d4f7d8;
+}
+
+.trf-quote-notice--error {
+	background: rgba(180, 40, 40, 0.25);
+	color: #ffd6d6;
 }
 
 .trf-footer__bottom {
@@ -338,6 +457,24 @@ p {
 
 .trf-page__header {
 	margin-bottom: 1.5rem;
+}
+
+.trf-page__meta {
+	display: block;
+	margin-top: 0.4rem;
+	color: var(--trf-muted);
+	font-size: 0.9rem;
+}
+
+.trf-page__thumb {
+	margin: 0 0 1.5rem;
+	border-radius: var(--trf-radius);
+	overflow: hidden;
+}
+
+.trf-page__thumb img {
+	width: 100%;
+	height: auto;
 }
 
 .trf-page__content > * + * {
@@ -392,12 +529,41 @@ p {
 		display: none;
 	}
 
+	.trf-nav__list .menu-item-has-children {
+		display: flex;
+		flex-wrap: wrap;
+		align-items: center;
+	}
+
+	.trf-nav__list .menu-item-has-children > a {
+		flex: 1;
+	}
+
+	.trf-nav__list .menu-item-has-children > .sub-menu {
+		flex-basis: 100%;
+	}
+
 	.trf-nav__list .menu-item-has-children.is-open > .sub-menu {
 		display: block;
 	}
 
+	.trf-nav__sub-toggle {
+		display: inline-flex;
+		align-items: center;
+		justify-content: center;
+	}
+
+	.trf-header.is-open .trf-nav__sub-toggle[aria-expanded="true"] {
+		transform: rotate(180deg);
+	}
+
 	.trf-header__cta {
 		display: none;
+	}
+
+	.trf-nav__cta {
+		display: inline-flex;
+		margin-top: 0.85rem;
 	}
 
 	.trf-footer__grid {
