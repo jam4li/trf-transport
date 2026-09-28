@@ -107,8 +107,8 @@ function trf_home_countries() {
 				'title'      => 'امارات',
 				'text'       => 'خدمات ارسال بار به امارات با تضمین قیمت و سلامت کالا حین تحویل را از شرکت بین‌المللی تراف دریافت کنید. ما در تراف با سابقه‌ای طولانی مدت در زمینه حمل بار دریایی و هوایی به کشور امارات، امکان حمل و نقل و ارسال بار به دو صورت فریت بار و تجاری را فراهم کرده‌ایم.',
 				'page'       => 'emirates',
-				'post_types' => array( 'services', 'page' ),
-				'fallback'   => '-/emirates',
+				'post_types' => array( 'foreign-agents', 'page' ),
+				'fallback'   => 'foreign-agents/emirates',
 				'image'      => 'img/countries/uae.svg',
 			),
 			array(

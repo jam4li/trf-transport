@@ -51,8 +51,11 @@ debug.log
 /wp-content/themes/*
 !/wp-content/themes/index.php
 !/wp-content/themes/trf-theme/
-# Uncomment the next line if you customize Hello Elementor and need it in git:
-# !/wp-content/themes/hello-elementor/
+
+# ----- Must-use plugins: ignore third-party; keep site-specific -----
+/wp-content/mu-plugins/*
+!/wp-content/mu-plugins/index.php
+!/wp-content/mu-plugins/trf-post-types.php
 
 # ----- Plugins: ignore third-party; keep custom plugins only -----
 /wp-content/plugins/*
@@ -68,7 +71,7 @@ debug.log
 *.rar
 *.7z
 
-# ----- Saved Elementor homepage dump (browser "Save page as") -----
+# ----- Saved homepage dump (browser "Save page as") -----
 /index.html
 /index_files/
 
