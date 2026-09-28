@@ -17,7 +17,9 @@ get_header();
 			<article <?php post_class( 'trf-page__article' ); ?>>
 				<header class="trf-page__header">
 					<h1><?php the_title(); ?></h1>
-					<time class="trf-page__meta" datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+					<?php if ( is_singular( 'post' ) ) : ?>
+						<time class="trf-page__meta" datetime="<?php echo esc_attr( get_the_date( DATE_W3C ) ); ?>"><?php echo esc_html( get_the_date() ); ?></time>
+					<?php endif; ?>
 				</header>
 				<?php if ( has_post_thumbnail() ) : ?>
 					<div class="trf-page__thumb">
@@ -25,7 +27,12 @@ get_header();
 					</div>
 				<?php endif; ?>
 				<div class="trf-page__content">
-					<?php the_content(); ?>
+					<?php
+					the_content();
+					if ( ! get_the_content() && has_excerpt() ) {
+						echo '<p>' . esc_html( get_the_excerpt() ) . '</p>';
+					}
+					?>
 				</div>
 			</article>
 			<?php

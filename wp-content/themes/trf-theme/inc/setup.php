@@ -58,6 +58,16 @@ function trf_assign_primary_menu() {
 add_action( 'after_switch_theme', 'trf_assign_primary_menu' );
 
 /**
+ * Drop the default "Archives:" prefix on archive headings.
+ *
+ * @return string
+ */
+function trf_archive_title_prefix() {
+	return '';
+}
+add_filter( 'get_the_archive_title_prefix', 'trf_archive_title_prefix' );
+
+/**
  * Add a disclosure button next to parent items in the primary menu (mobile).
  *
  * @param string   $item_output Item HTML.
