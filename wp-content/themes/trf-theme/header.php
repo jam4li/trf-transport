@@ -33,12 +33,12 @@
 				)
 			);
 			?>
-			<a class="trf-btn trf-btn--primary trf-nav__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>">
+			<a class="trf-btn trf-btn--primary trf-nav__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>" data-trf-quote-open>
 				<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
 			</a>
 		</nav>
 
-		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>">
+		<a class="trf-btn trf-btn--primary trf-header__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>" data-trf-quote-open>
 			<?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?>
 		</a>
 	</div>

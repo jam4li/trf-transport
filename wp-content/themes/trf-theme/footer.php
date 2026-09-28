@@ -40,12 +40,6 @@ $trf_socials   = array(
 			<h2>دسترسی سریع</h2>
 			<?php trf_nav_or_fallback( 'footer-extra', trf_footer_extra_fallback() ); ?>
 		</div>
-
-		<div class="trf-footer__col trf-footer__quote" id="quote">
-			<h2>استعلام قیمت حمل</h2>
-			<p>برای دریافت بهترین قیمت حمل فرم زیر را تکمیل کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند</p>
-			<?php get_template_part( 'template-parts/quote-form' ); ?>
-		</div>
 	</div>
 
 	<div class="trf-footer__bottom">
@@ -54,6 +48,8 @@ $trf_socials   = array(
 		</div>
 	</div>
 </footer>
+
+<?php get_template_part( 'template-parts/quote-modal' ); ?>
 
 <?php wp_footer(); ?>
 </body>

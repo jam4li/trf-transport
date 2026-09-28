@@ -1,6 +1,6 @@
 <?php
 /**
- * Footer quote form: nonce + admin-post + wp_mail.
+ * Quote modal form: nonce + admin-post + wp_mail.
  *
  * @package trf-theme
  */

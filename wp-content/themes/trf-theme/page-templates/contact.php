@@ -24,8 +24,8 @@ get_header();
 				</div>
 				<div class="trf-page__quote">
 					<h2><?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?></h2>
-					<p><?php esc_html_e( 'برای دریافت بهترین قیمت حمل فرم زیر را تکمیل کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند', 'trf-theme' ); ?></p>
-					<?php get_template_part( 'template-parts/quote-form', null, array( 'suffix' => 'contact' ) ); ?>
+					<p><?php esc_html_e( 'برای دریافت بهترین قیمت حمل، درخواست خود را ثبت کنید تا کارشناسان ما در اسرع وقت با شما تماس بگیرند.', 'trf-theme' ); ?></p>
+					<a class="trf-btn trf-btn--primary" href="<?php echo esc_url( trf_quote_cta_url() ); ?>" data-trf-quote-open><?php esc_html_e( 'درخواست استعلام', 'trf-theme' ); ?></a>
 				</div>
 			</article>
 			<?php

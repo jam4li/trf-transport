@@ -100,12 +100,12 @@ function trf_tracking_url() {
 }
 
 /**
- * Quote CTA URL: in-page form on the homepage, contact page elsewhere.
+ * Quote CTA URL: opens the site-wide quote modal.
  *
  * @return string
  */
 function trf_quote_cta_url() {
-	return is_front_page() ? '#quote' : trf_contact_url();
+	return '#quote';
 }
 
 /**

@@ -28,6 +28,14 @@ function trf_theme_assets() {
 		true
 	);
 
+	wp_enqueue_script(
+		'trf-theme-quote-modal',
+		TRF_THEME_URI . '/assets/js/quote-modal.js',
+		array(),
+		TRF_THEME_VERSION,
+		true
+	);
+
 	if ( is_front_page() ) {
 		wp_enqueue_style(
 			'trf-theme-home',

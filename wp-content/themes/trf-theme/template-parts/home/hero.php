@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 		<h1>شرکت حمل و نقل بین المللی تراف</h1>
 		<p class="trf-hero__lead">خدماتی که ما ارائه می‌دهیم</p>
 		<div class="trf-hero__actions">
-			<a class="trf-btn trf-btn--primary" href="#quote"><?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?></a>
+			<a class="trf-btn trf-btn--primary" href="#quote" data-trf-quote-open><?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?></a>
 			<a class="trf-btn trf-btn--ghost" href="<?php echo esc_url( trf_tracking_url() ); ?>"><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></a>
 		</div>
 	</div>
