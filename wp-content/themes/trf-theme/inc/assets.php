@@ -36,6 +36,15 @@ function trf_theme_assets() {
 		true
 	);
 
+	if ( is_page_template( 'page-templates/contact.php' ) ) {
+		wp_enqueue_style(
+			'trf-theme-contact',
+			TRF_THEME_URI . '/assets/css/contact.css',
+			array( 'trf-theme-base' ),
+			TRF_THEME_VERSION
+		);
+	}
+
 	if ( is_front_page() ) {
 		wp_enqueue_style(
 			'trf-theme-home',

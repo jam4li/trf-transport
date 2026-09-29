@@ -49,6 +49,31 @@ function trf_mod( $key ) {
 }
 
 /**
+ * Convert Persian/Arabic-Indic digits to ASCII.
+ *
+ * @param string $value Mixed-numeral string.
+ * @return string
+ */
+function trf_ascii_digits( $value ) {
+	$from = array( '۰', '۱', '۲', '۳', '۴', '۵', '۶', '۷', '۸', '۹', '٠', '١', '٢', '٣', '٤', '٥', '٦', '٧', '٨', '٩' );
+	$to   = array( '0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '0', '1', '2', '3', '4', '5', '6', '7', '8', '9' );
+
+	return str_replace( $from, $to, $value );
+}
+
+/**
+ * Build a tel: href from a display phone number.
+ *
+ * @param string $display Phone as shown to the user.
+ * @return string Digits only, or empty if none.
+ */
+function trf_tel_href( $display ) {
+	$digits = preg_replace( '/\D+/', '', trf_ascii_digits( $display ) );
+
+	return is_string( $digits ) ? $digits : '';
+}
+
+/**
  * Resolve a published permalink by slug, with a path fallback.
  *
  * @param string          $slug       Post name.
@@ -140,7 +165,7 @@ function trf_the_logo( $extra_class = '' ) {
 	}
 
 	printf(
-		'<a class="%1$s" href="%2$s"><img src="%3$s" width="180" height="56" alt="%4$s"></a>',
+		'<a class="%1$s" href="%2$s"><img src="%3$s" width="260" height="81" alt="%4$s"></a>',
 		esc_attr( $class ),
 		esc_url( home_url( '/' ) ),
 		esc_url( trf_asset( 'img/logo.png' ) ),
@@ -160,6 +185,7 @@ function trf_nav_or_fallback( $location, $fallback ) {
 			array(
 				'theme_location' => $location,
 				'container'      => false,
+				'menu_class'     => 'trf-footer__list',
 				'depth'          => 1,
 				'fallback_cb'    => false,
 			)
@@ -167,7 +193,7 @@ function trf_nav_or_fallback( $location, $fallback ) {
 		return;
 	}
 
-	echo '<ul>';
+	echo '<ul class="trf-footer__list">';
 	foreach ( $fallback as $item ) {
 		$attrs = '';
 		if ( ! empty( $item['external'] ) ) {

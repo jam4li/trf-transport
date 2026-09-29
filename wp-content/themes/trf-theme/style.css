@@ -3,11 +3,11 @@ Theme Name: TRF Transport
 Theme URI: https://trf-transport.com/
 Author: TRF Transport
 Description: Custom RTL theme for شرکت حمل و نقل بین المللی تراف.
-Version: 1.8.7
+Version: 1.9.0
 Requires at least: 6.0
 Tested up to: 6.8
 Requires PHP: 7.4
 Text Domain: trf-theme
 */
 
-/* Styles live in assets/css/base.css (global) and assets/css/home.css (front page). */
+/* Styles live in assets/css/base.css (global), home.css (front page), and contact.css (contact template). */

@@ -33,6 +33,12 @@
 				dialog.setAttribute("open", "");
 			}
 			document.body.classList.add("trf-modal-open");
+			window.setTimeout(function () {
+				var first = dialog.querySelector('input[name="trf_name"]');
+				if (first) {
+					first.focus();
+				}
+			}, 0);
 		}
 
 		function closeModal() {
@@ -75,7 +81,8 @@
 		});
 
 		var params = new URLSearchParams(window.location.search);
-		if (params.get("trf_quote") || window.location.hash === "#quote") {
+		var hash = window.location.hash;
+		if ( hash !== "#contact-form" && ! params.get("trf_contact") && (params.get("trf_quote") || hash === "#quote") ) {
 			openModal();
 		}
 	});

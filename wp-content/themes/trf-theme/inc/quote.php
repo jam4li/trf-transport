@@ -76,6 +76,15 @@ add_action( 'admin_post_nopriv_trf_quote_submit', 'trf_handle_quote_submit' );
 add_action( 'admin_post_trf_quote_submit', 'trf_handle_quote_submit' );
 
 /**
+ * Allowed in-page anchors after quote submit.
+ *
+ * @return string[]
+ */
+function trf_quote_anchors() {
+	return array( 'quote', 'contact-form' );
+}
+
+/**
  * Redirect back to the form with a status flag.
  *
  * @param string $url    Referer URL.
@@ -83,9 +92,25 @@ add_action( 'admin_post_trf_quote_submit', 'trf_handle_quote_submit' );
  */
 function trf_quote_redirect( $url, $status ) {
 	$url = strtok( $url, '#' );
-	$url = remove_query_arg( 'trf_quote', $url );
-	$url = add_query_arg( 'trf_quote', $status, $url );
-	wp_safe_redirect( $url . '#quote' );
+	$url = remove_query_arg( array( 'trf_quote', 'trf_quote_at' ), $url );
+
+	$anchor = 'quote';
+	if ( isset( $_POST['trf_quote_anchor'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing -- nonce already verified in handler.
+		$candidate = sanitize_key( wp_unslash( $_POST['trf_quote_anchor'] ) );
+		if ( in_array( $candidate, trf_quote_anchors(), true ) ) {
+			$anchor = $candidate;
+		}
+	}
+
+	$url = add_query_arg(
+		array(
+			'trf_quote'    => $status,
+			'trf_quote_at' => $anchor,
+		),
+		$url
+	);
+
+	wp_safe_redirect( $url . '#' . $anchor );
 	exit;
 }
 
@@ -102,6 +127,24 @@ function trf_quote_status() {
 	$status = sanitize_key( wp_unslash( $_GET['trf_quote'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 	if ( in_array( $status, array( 'sent', 'error' ), true ) ) {
 		return $status;
+	}
+
+	return '';
+}
+
+/**
+ * Which form instance should show the flash notice.
+ *
+ * @return string
+ */
+function trf_quote_anchor_from_request() {
+	if ( empty( $_GET['trf_quote_at'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+		return '';
+	}
+
+	$anchor = sanitize_key( wp_unslash( $_GET['trf_quote_at'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+	if ( in_array( $anchor, trf_quote_anchors(), true ) ) {
+		return $anchor;
 	}
 
 	return '';

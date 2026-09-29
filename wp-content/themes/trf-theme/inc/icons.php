@@ -33,6 +33,7 @@ function trf_icon( $name ) {
 		'file'     => '<path d="M7 3h7l5 5v13H7z"/><path d="M14 3v5h5"/><path d="M10 13h6"/><path d="M10 17h4"/>',
 		'check'    => '<circle cx="12" cy="12" r="9"/><path d="M8 12.5 10.8 15.2 16 9.5"/>',
 		'pin'      => '<path d="M12 21s7-6.2 7-11a7 7 0 1 0-14 0c0 4.8 7 11 7 11z"/><circle cx="12" cy="10" r="2.2"/>',
+		'mail'     => '<rect x="3" y="5" width="18" height="14" rx="2"/><path d="m4 7 8 6 8-6"/>',
 	);
 
 	if ( ! isset( $paths[ $name ] ) ) {
