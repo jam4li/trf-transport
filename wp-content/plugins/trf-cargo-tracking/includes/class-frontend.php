@@ -44,13 +44,6 @@ class TRF_Cargo_Tracking_Frontend {
 		wp_enqueue_style( 'trf-cargo-tracking' );
 		wp_enqueue_script( 'trf-cargo-tracking' );
 
-		$localize = [
-			'ajaxUrl' => admin_url( 'admin-ajax.php' ),
-			'nonce'   => wp_create_nonce( 'trf_track_lookup' ),
-			'action'  => 'trf_track_lookup',
-		];
-		wp_localize_script( 'trf-cargo-tracking', 'trfCargoTracking', $localize );
-
 		$options = get_option( 'trf_cargo_tracking' );
 		if ( ! is_array( $options ) ) {
 			$options = [];
@@ -64,6 +57,23 @@ class TRF_Cargo_Tracking_Frontend {
 		if ( isset( $options['button_label'] ) ) {
 			$button = (string) $options['button_label'];
 		}
+		if ( '' === $label ) {
+			$label = __( 'کد رهگیری', 'trf-cargo-tracking' );
+		}
+		if ( '' === $button ) {
+			$button = __( 'بررسی وضعیت بار', 'trf-cargo-tracking' );
+		}
+
+		wp_localize_script(
+			'trf-cargo-tracking',
+			'trfCargoTracking',
+			array(
+				'ajaxUrl'   => admin_url( 'admin-ajax.php' ),
+				'nonce'     => wp_create_nonce( 'trf_track_lookup' ),
+				'action'    => 'trf_track_lookup',
+				'codeLabel' => $label,
+			)
+		);
 
 		$code   = '';
 		$result = null;

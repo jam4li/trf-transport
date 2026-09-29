@@ -2,7 +2,7 @@
 /**
  * Plugin Name: TRF Cargo Tracking
  * Description: Cargo tracking for TRF Transport. Reads and writes the existing wpwv_validations table used previously by Trust.
- * Version: 1.0.0
+ * Version: 1.1.2
  * Author: TRF Transport
  * Text Domain: trf-cargo-tracking
  * Requires at least: 6.0
@@ -15,7 +15,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TRF_TRACK_VERSION', '1.0.0' );
+define( 'TRF_TRACK_VERSION', '1.1.2' );
 define( 'TRF_TRACK_FILE', __FILE__ );
 define( 'TRF_TRACK_DIR', plugin_dir_path( __FILE__ ) );
 define( 'TRF_TRACK_URL', plugin_dir_url( __FILE__ ) );
