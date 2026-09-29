@@ -45,6 +45,15 @@ function trf_theme_assets() {
 		);
 	}
 
+	if ( is_page_template( 'page-templates/tracking.php' ) ) {
+		wp_enqueue_style(
+			'trf-theme-tracking',
+			TRF_THEME_URI . '/assets/css/tracking.css',
+			array( 'trf-theme-base' ),
+			TRF_THEME_VERSION
+		);
+	}
+
 	if ( is_front_page() ) {
 		wp_enqueue_style(
 			'trf-theme-home',
