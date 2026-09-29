@@ -47,8 +47,16 @@ $agent_groups    = array(
 				<button class="trf-agents__nav trf-agents__nav--prev" type="button" data-trf-agents-prev aria-label="<?php esc_attr_e( 'قبلی', 'trf-theme' ); ?>"><?php echo trf_icon( 'arrow' ); ?></button>
 				<div class="trf-agents__track" data-trf-agents-track>
 					<?php foreach ( $list as $agent ) : ?>
+						<?php
+						$agent_alt = sprintf(
+							/* translators: 1: city/location, 2: short description */
+							__( '%1$s — %2$s', 'trf-theme' ),
+							$agent[0],
+							$agent[1]
+						);
+						?>
 						<article class="trf-agent-card">
-							<img src="<?php echo esc_url( trf_asset( 'img/' . $agent[2] ) ); ?>" alt="" width="400" height="275" loading="lazy" decoding="async">
+							<img src="<?php echo esc_url( trf_asset( 'img/' . $agent[2] ) ); ?>" alt="<?php echo esc_attr( $agent_alt ); ?>" width="400" height="275" loading="lazy" decoding="async">
 							<div class="trf-agent-card__body">
 								<h3><?php echo trf_icon( 'pin' ); ?><?php echo esc_html( $agent[0] ); ?></h3>
 								<p><?php echo esc_html( $agent[1] ); ?></p>

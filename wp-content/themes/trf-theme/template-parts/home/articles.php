@@ -40,7 +40,11 @@ if ( ! $articles instanceof WP_Query || ! $articles->have_posts() ) {
 						if ( has_post_thumbnail() ) {
 							the_post_thumbnail( 'medium_large', array( 'loading' => 'lazy' ) );
 						} else {
-							echo '<img src="' . esc_url( trf_asset( 'img/articles-1.webp' ) ) . '" alt="" loading="lazy" decoding="async">';
+							printf(
+								'<img src="%1$s" alt="%2$s" width="640" height="400" loading="lazy" decoding="async">',
+								esc_url( trf_asset( 'img/articles-1.webp' ) ),
+								esc_attr( get_the_title() )
+							);
 						}
 						?>
 					</a>
