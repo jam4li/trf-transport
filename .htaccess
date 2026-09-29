@@ -30,6 +30,17 @@ CacheKeyModify -qs:_ga
 ## LITESPEED WP CACHE PLUGIN - Do not edit the contents of this block! ##
 # END NON_LSCACHE
 
+# BEGIN TRF Admin Slug
+# Map /trf-modir → /wp-admin and redirect direct /wp-admin hits.
+<IfModule mod_rewrite.c>
+RewriteEngine On
+RewriteCond %{THE_REQUEST} \s/+wp-admin([?\s/]|$) [NC]
+RewriteRule ^wp-admin(?:/(.*))?$ /trf-modir/$1 [R=301,L,QSA,NE]
+RewriteRule ^trf-modir/?$ /wp-admin/index.php [QSA,L]
+RewriteRule ^trf-modir/(.*)$ /wp-admin/$1 [QSA,L]
+</IfModule>
+# END TRF Admin Slug
+
 # BEGIN WordPress
 # دستورالعمل‌های (خطوط) بین "BEGIN WordPress" و "END WordPress"
 # به طور پویا تولید شده‌اند، و فقط باید به وسیلهٔ صافی‌های وردرپرس ویرایش شوند.
