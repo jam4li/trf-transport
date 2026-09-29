@@ -147,6 +147,139 @@ function trf_news_url() {
 }
 
 /**
+ * Manual excerpt for article hero lead (never auto-generated).
+ *
+ * @param int|WP_Post|null $post Post.
+ * @return string
+ */
+function trf_article_lead( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post || '' === trim( (string) $post->post_excerpt ) ) {
+		return '';
+	}
+
+	return wp_trim_words( wp_strip_all_tags( get_the_excerpt( $post ) ), 36, '…' );
+}
+
+/**
+ * Fallback image URL when a singular has no featured image.
+ *
+ * @param int|WP_Post|null $post Post.
+ * @return string
+ */
+function trf_article_fallback_image( $post = null ) {
+	$post = get_post( $post );
+	$slug = $post ? (string) $post->post_name : '';
+
+	$map = array(
+		'road-transport' => 'img/service-road.webp',
+		'sea-transport'  => 'img/service-sea.webp',
+		'rail-transport' => 'img/service-rail.webp',
+		'air-transport'  => 'img/service-air.webp',
+	);
+
+	if ( isset( $map[ $slug ] ) ) {
+		return trf_asset( $map[ $slug ] );
+	}
+
+	if ( false !== strpos( $slug, 'road' ) || false !== strpos( $slug, 'truck' ) ) {
+		return trf_asset( 'img/service-road.webp' );
+	}
+	if ( false !== strpos( $slug, 'sea' ) || false !== strpos( $slug, 'ship' ) ) {
+		return trf_asset( 'img/service-sea.webp' );
+	}
+	if ( false !== strpos( $slug, 'rail' ) || false !== strpos( $slug, 'train' ) ) {
+		return trf_asset( 'img/service-rail.webp' );
+	}
+	if ( false !== strpos( $slug, 'air' ) || false !== strpos( $slug, 'plane' ) ) {
+		return trf_asset( 'img/service-air.webp' );
+	}
+
+	return trf_asset( 'img/articles-1.webp' );
+}
+
+/**
+ * Print the article hero image (featured, else themed fallback).
+ *
+ * @param string           $size Image size.
+ * @param int|WP_Post|null $post Post.
+ */
+function trf_the_article_image( $size = 'large', $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return;
+	}
+
+	if ( has_post_thumbnail( $post ) ) {
+		echo get_the_post_thumbnail(
+			$post,
+			$size,
+			array(
+				'class'         => 'trf-article__img',
+				'loading'       => 'eager',
+				'fetchpriority' => 'high',
+				'decoding'      => 'async',
+			)
+		);
+		return;
+	}
+
+	printf(
+		'<img class="trf-article__img" src="%1$s" alt="%2$s" loading="eager" fetchpriority="high" decoding="async" width="1200" height="675">',
+		esc_url( trf_article_fallback_image( $post ) ),
+		esc_attr( get_the_title( $post ) )
+	);
+}
+
+/**
+ * Print a compact breadcrumb for singular pages/posts.
+ *
+ * @param int|WP_Post|null $post Post.
+ */
+function trf_the_article_breadcrumb( $post = null ) {
+	$post = get_post( $post );
+	if ( ! $post ) {
+		return;
+	}
+
+	$items = array(
+		array(
+			'label' => __( 'خانه', 'trf-theme' ),
+			'url'   => home_url( '/' ),
+		),
+	);
+
+	if ( is_singular( 'post' ) ) {
+		$items[] = array(
+			'label' => __( 'دانشنامه', 'trf-theme' ),
+			'url'   => trf_news_url(),
+		);
+	} elseif ( $post->post_parent ) {
+		$ancestors = array_reverse( get_post_ancestors( $post ) );
+		foreach ( $ancestors as $ancestor_id ) {
+			$items[] = array(
+				'label' => get_the_title( $ancestor_id ),
+				'url'   => get_permalink( $ancestor_id ),
+			);
+		}
+	}
+
+	echo '<nav class="trf-article__breadcrumb" aria-label="' . esc_attr__( 'مسیر صفحه', 'trf-theme' ) . '"><ol>';
+	foreach ( $items as $item ) {
+		printf(
+			'<li><a href="%1$s">%2$s</a></li>',
+			esc_url( $item['url'] ),
+			esc_html( $item['label'] )
+		);
+	}
+	printf(
+		'<li aria-current="page"><span>%s</span></li>',
+		esc_html( get_the_title( $post ) )
+	);
+	echo '</ol></nav>';
+}
+
+/**
  * Print the custom logo or the bundled fallback.
  *
  * @param string $extra_class Extra class on the wrapper (e.g. trf-logo--footer).

@@ -54,6 +54,20 @@ function trf_theme_assets() {
 		);
 	}
 
+	$trf_is_article = is_singular()
+		&& ! is_front_page()
+		&& ! is_page_template( 'page-templates/contact.php' )
+		&& ! is_page_template( 'page-templates/tracking.php' );
+
+	if ( $trf_is_article ) {
+		wp_enqueue_style(
+			'trf-theme-article',
+			TRF_THEME_URI . '/assets/css/article.css',
+			array( 'trf-theme-base' ),
+			TRF_THEME_VERSION
+		);
+	}
+
 	if ( is_front_page() ) {
 		wp_enqueue_style(
 			'trf-theme-home',

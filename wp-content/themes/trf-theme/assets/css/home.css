@@ -668,37 +668,6 @@
 }
 
 /* Closing CTA */
-.trf-cta-band {
-	background: linear-gradient(135deg, #082826 0%, #0e5854 58%, #16756e 100%);
-	color: var(--trf-white);
-	padding: 4.25rem 0;
-}
-
-.trf-cta-band__inner {
-	display: flex;
-	align-items: center;
-	justify-content: space-between;
-	gap: 2rem;
-}
-
-.trf-cta-band h2 {
-	font-size: clamp(1.4rem, 2.2vw, 2rem);
-	line-height: 1.4;
-	margin-bottom: 0.5rem;
-	text-wrap: balance;
-}
-
-.trf-cta-band p {
-	color: rgba(255, 255, 255, 0.86);
-	max-width: 36rem;
-}
-
-.trf-cta-band__actions {
-	display: flex;
-	flex-wrap: wrap;
-	gap: 0.75rem;
-	flex-shrink: 0;
-}
 
 @media (max-width: 1100px) {
 	.trf-services__grid,
