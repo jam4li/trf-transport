@@ -27,6 +27,7 @@ function trf_theme_assets() {
 		TRF_THEME_VERSION,
 		true
 	);
+	wp_script_add_data( 'trf-theme-nav', 'strategy', 'defer' );
 
 	wp_enqueue_script(
 		'trf-theme-quote-modal',
@@ -35,6 +36,7 @@ function trf_theme_assets() {
 		TRF_THEME_VERSION,
 		true
 	);
+	wp_script_add_data( 'trf-theme-quote-modal', 'strategy', 'defer' );
 
 	if ( is_page_template( 'page-templates/contact.php' ) ) {
 		wp_enqueue_style(
@@ -82,6 +84,28 @@ function trf_theme_assets() {
 			TRF_THEME_VERSION,
 			true
 		);
+		wp_script_add_data( 'trf-theme-home', 'strategy', 'defer' );
 	}
 }
 add_action( 'wp_enqueue_scripts', 'trf_theme_assets' );
+
+/**
+ * Preload the homepage LCP hero image.
+ *
+ * @param array $preload_resources Resources queued for preload.
+ * @return array
+ */
+function trf_theme_preload_resources( $preload_resources ) {
+	if ( ! is_front_page() ) {
+		return $preload_resources;
+	}
+
+	$preload_resources[] = array(
+		'href'        => trf_asset( 'img/about.webp' ),
+		'as'          => 'image',
+		'fetchpriority' => 'high',
+	);
+
+	return $preload_resources;
+}
+add_filter( 'wp_preload_resources', 'trf_theme_preload_resources' );

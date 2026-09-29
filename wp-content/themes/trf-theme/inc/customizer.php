@@ -44,6 +44,19 @@ function trf_customize_register( $wp_customize ) {
 			'type'        => 'text',
 			'description' => __( 'Published page slug, e.g. contact-us', 'trf-theme' ),
 		),
+		'trf_hero_eyebrow'    => array(
+			'label' => __( 'Homepage hero eyebrow', 'trf-theme' ),
+			'type'  => 'text',
+		),
+		'trf_hero_title'      => array(
+			'label'       => __( 'Homepage hero H1', 'trf-theme' ),
+			'type'        => 'text',
+			'description' => __( 'Visible homepage headline. Align with Rank Math SEO title.', 'trf-theme' ),
+		),
+		'trf_hero_lead'       => array(
+			'label' => __( 'Homepage hero lead', 'trf-theme' ),
+			'type'  => 'textarea',
+		),
 		'trf_footer_blurb'    => array(
 			'label' => __( 'Footer about text', 'trf-theme' ),
 			'type'  => 'textarea',

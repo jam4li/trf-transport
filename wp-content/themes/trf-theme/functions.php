@@ -9,7 +9,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 	exit;
 }
 
-define( 'TRF_THEME_VERSION', '1.11.0' );
+define( 'TRF_THEME_VERSION', '1.12.0' );
 define( 'TRF_THEME_DIR', get_template_directory() );
 define( 'TRF_THEME_URI', get_template_directory_uri() );
 
