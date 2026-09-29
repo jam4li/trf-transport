@@ -43,9 +43,11 @@ if ( '' === $phone_tel && $phone ) {
 				<span dir="ltr"><?php echo esc_html( $phone ); ?></span>
 			</a>
 		<?php endif; ?>
-		<a class="trf-tracking__support-link" href="<?php echo esc_url( trf_contact_url() ); ?>">
-			<?php esc_html_e( 'تماس با پشتیبانی', 'trf-theme' ); ?>
-			<?php echo trf_icon( 'arrow' ); ?>
-		</a>
+		<?php if ( trf_contact_url() ) : ?>
+			<a class="trf-tracking__support-link" href="<?php echo esc_url( trf_contact_url() ); ?>">
+				<?php esc_html_e( 'تماس با پشتیبانی', 'trf-theme' ); ?>
+				<?php echo trf_icon( 'arrow' ); ?>
+			</a>
+		<?php endif; ?>
 	</div>
 </aside>

@@ -40,7 +40,9 @@ $benefits = isset( $args['benefits'] ) ? $args['benefits'] : array();
 				</ul>
 			<?php endif; ?>
 			<div class="trf-about__actions">
-				<a class="trf-btn trf-btn--primary" href="<?php echo esc_url( trf_contact_url() ); ?>">اطلاعات تماس</a>
+				<?php if ( trf_contact_url() ) : ?>
+					<a class="trf-btn trf-btn--primary" href="<?php echo esc_url( trf_contact_url() ); ?>">اطلاعات تماس</a>
+				<?php endif; ?>
 				<a class="trf-btn trf-btn--outline" href="#quote" data-trf-quote-open>استعلام قیمت</a>
 			</div>
 		</div>

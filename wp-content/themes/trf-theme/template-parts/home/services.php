@@ -24,17 +24,33 @@ $services = isset( $args['services'] ) ? $args['services'] : array();
 		</header>
 		<div class="trf-services__grid">
 			<?php foreach ( $services as $service ) : ?>
-				<a class="trf-service-card" href="<?php echo esc_url( $service['url'] ); ?>">
-					<span class="trf-service-card__bg" style="background-image:url('<?php echo esc_url( $service['image'] ); ?>')"></span>
+				<?php
+				$url   = ! empty( $service['url'] ) ? $service['url'] : '';
+				$tag   = $url ? 'a' : 'div';
+				$href  = $url ? ' href="' . esc_url( $url ) . '"' : '';
+				$title = isset( $service['title'] ) ? $service['title'] : '';
+				?>
+				<<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static a|div. ?> class="trf-service-card"<?php echo $href; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?>>
+					<img
+						class="trf-service-card__bg"
+						src="<?php echo esc_url( $service['image'] ); ?>"
+						alt="<?php echo esc_attr( $title ); ?>"
+						width="640"
+						height="400"
+						loading="lazy"
+						decoding="async"
+					>
 					<span class="trf-service-card__body">
 						<?php if ( ! empty( $service['icon'] ) ) : ?>
 							<span class="trf-service-card__icon"><?php echo trf_icon( $service['icon'] ); ?></span>
 						<?php endif; ?>
-						<h3><?php echo esc_html( $service['title'] ); ?></h3>
+						<h3><?php echo esc_html( $title ); ?></h3>
 						<p><?php echo esc_html( $service['text'] ); ?></p>
-						<span class="trf-service-card__more">جزئیات خدمات <?php echo trf_icon( 'arrow' ); ?></span>
+						<?php if ( $url ) : ?>
+							<span class="trf-service-card__more">جزئیات خدمات <?php echo trf_icon( 'arrow' ); ?></span>
+						<?php endif; ?>
 					</span>
-				</a>
+				</<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static a|div. ?>>
 			<?php endforeach; ?>
 		</div>
 	</div>

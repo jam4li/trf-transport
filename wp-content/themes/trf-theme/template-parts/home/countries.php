@@ -26,16 +26,22 @@ $countries = isset( $args['countries'] ) ? $args['countries'] : array();
 		<div class="trf-countries__grid">
 			<?php foreach ( $countries as $country ) : ?>
 				<?php
-				$lead = ! empty( $country['lead'] ) ? $country['lead'] : wp_trim_words( $country['text'], 22, '…' );
+				$lead  = ! empty( $country['lead'] ) ? $country['lead'] : wp_trim_words( $country['text'], 22, '…' );
+				$url   = ! empty( $country['url'] ) ? $country['url'] : '';
+				$tag   = $url ? 'a' : 'div';
+				$href  = $url ? ' href="' . esc_url( $url ) . '"' : '';
+				$title = isset( $country['title'] ) ? $country['title'] : '';
 				?>
-				<a class="trf-destination-card" href="<?php echo esc_url( $country['url'] ); ?>">
+				<<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static a|div. ?> class="trf-destination-card"<?php echo $href; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- escaped above. ?>>
 					<span class="trf-destination-card__flag">
-						<img src="<?php echo esc_url( $country['image'] ); ?>" alt="" width="96" height="64" loading="lazy" decoding="async">
+						<img src="<?php echo esc_url( $country['image'] ); ?>" alt="<?php echo esc_attr( $title ); ?>" width="96" height="64" loading="lazy" decoding="async">
 					</span>
-					<h3><?php echo esc_html( $country['title'] ); ?></h3>
+					<h3><?php echo esc_html( $title ); ?></h3>
 					<p><?php echo esc_html( $lead ); ?></p>
-					<span class="trf-destination-card__more">جزئیات مسیر <?php echo trf_icon( 'arrow' ); ?></span>
-				</a>
+					<?php if ( $url ) : ?>
+						<span class="trf-destination-card__more">جزئیات مسیر <?php echo trf_icon( 'arrow' ); ?></span>
+					<?php endif; ?>
+				</<?php echo $tag; // phpcs:ignore WordPress.Security.EscapeOutput.OutputNotEscaped -- static a|div. ?>>
 			<?php endforeach; ?>
 		</div>
 	</div>

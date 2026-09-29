@@ -36,19 +36,23 @@ if ( '' === $phone_tel && $phone ) {
 	</div>
 
 	<ul class="trf-article__aside-links">
-		<li>
-			<a href="<?php echo esc_url( trf_tracking_url() ); ?>">
-				<span class="trf-article__aside-icon" aria-hidden="true"><?php echo trf_icon( 'package' ); ?></span>
-				<span><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></span>
-				<?php echo trf_icon( 'arrow' ); ?>
-			</a>
-		</li>
-		<li>
-			<a href="<?php echo esc_url( trf_contact_url() ); ?>">
-				<span class="trf-article__aside-icon" aria-hidden="true"><?php echo trf_icon( 'mail' ); ?></span>
-				<span><?php esc_html_e( 'تماس با پشتیبانی', 'trf-theme' ); ?></span>
-				<?php echo trf_icon( 'arrow' ); ?>
-			</a>
-		</li>
+		<?php if ( trf_tracking_url() ) : ?>
+			<li>
+				<a href="<?php echo esc_url( trf_tracking_url() ); ?>">
+					<span class="trf-article__aside-icon" aria-hidden="true"><?php echo trf_icon( 'package' ); ?></span>
+					<span><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></span>
+					<?php echo trf_icon( 'arrow' ); ?>
+				</a>
+			</li>
+		<?php endif; ?>
+		<?php if ( trf_contact_url() ) : ?>
+			<li>
+				<a href="<?php echo esc_url( trf_contact_url() ); ?>">
+					<span class="trf-article__aside-icon" aria-hidden="true"><?php echo trf_icon( 'mail' ); ?></span>
+					<span><?php esc_html_e( 'تماس با پشتیبانی', 'trf-theme' ); ?></span>
+					<?php echo trf_icon( 'arrow' ); ?>
+				</a>
+			</li>
+		<?php endif; ?>
 	</ul>
 </aside>

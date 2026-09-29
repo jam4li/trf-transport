@@ -26,12 +26,15 @@ function trf_asset( $path ) {
  */
 function trf_theme_defaults() {
 	return array(
-		'trf_phone'         => '۰۵۱-۳۷۷۶۲۶۲۶',
-		'trf_phone_tel'     => '05137762626',
-		'trf_tracking_slug' => 'tracking',
-		'trf_contact_slug'    => 'contact-us',
-		'trf_footer_blurb'    => 'شرکت باربری و حمل‌ونقل تراف با بیش از ۲۰ سال سابقه تخصصی در زمینه لجستیک؛ حمل بار هوایی، زمینی و دریایی فعالیت می‌کند.',
-		'trf_quote_email'     => '',
+		'trf_phone'          => '۰۵۱-۳۷۷۶۲۶۲۶',
+		'trf_phone_tel'      => '05137762626',
+		'trf_tracking_slug'  => 'tracking',
+		'trf_contact_slug'   => 'contact-us',
+		'trf_footer_blurb'   => 'شرکت باربری و حمل‌ونقل تراف با بیش از ۲۰ سال سابقه تخصصی در زمینه لجستیک؛ حمل بار هوایی، زمینی و دریایی فعالیت می‌کند.',
+		'trf_quote_email'    => '',
+		'trf_hero_eyebrow'   => 'بیش از ۲۰ سال لجستیک بین‌المللی',
+		'trf_hero_title'     => 'حمل مطمئن بار، از ایران تا سراسر جهان',
+		'trf_hero_lead'      => 'دریایی، جاده‌ای، ریلی و هوایی — با ترخیص کالا، پوشش بیمه و شبکه نمایندگان در مرزها و کشورهای مقصد.',
 	);
 }
 
@@ -74,15 +77,23 @@ function trf_tel_href( $display ) {
 }
 
 /**
- * Resolve a published permalink by slug, with a path fallback.
+ * Resolve a published permalink by slug.
+ *
+ * Returns an empty string when no published post matches, so callers can skip
+ * soft-404 inventing of paths.
  *
  * @param string          $slug       Post name.
  * @param string[]|string $post_types Post types to search.
- * @param string          $fallback   Path used if no post is found (e.g. "-/emirates").
- * @return string
+ * @param string          $fallback   Unused; kept for call-site compatibility.
+ * @return string Permalink or empty string.
  */
 function trf_permalink_for( $slug, $post_types = array( 'page' ), $fallback = '' ) {
+	unset( $fallback );
 	$slug = sanitize_title( $slug );
+
+	if ( '' === $slug ) {
+		return '';
+	}
 
 	$posts = get_posts(
 		array(
@@ -94,13 +105,13 @@ function trf_permalink_for( $slug, $post_types = array( 'page' ), $fallback = ''
 		)
 	);
 
-	if ( ! empty( $posts ) ) {
-		return get_permalink( $posts[0] );
+	if ( empty( $posts ) ) {
+		return '';
 	}
 
-	$path = $fallback ? $fallback : $slug;
+	$permalink = get_permalink( $posts[0] );
 
-	return home_url( user_trailingslashit( '/' . ltrim( $path, '/' ) ) );
+	return $permalink ? (string) $permalink : '';
 }
 
 /**
@@ -328,6 +339,9 @@ function trf_nav_or_fallback( $location, $fallback ) {
 
 	echo '<ul class="trf-footer__list">';
 	foreach ( $fallback as $item ) {
+		if ( empty( $item['url'] ) ) {
+			continue;
+		}
 		$attrs = '';
 		if ( ! empty( $item['external'] ) ) {
 			$attrs = ' target="_blank" rel="noopener noreferrer"';

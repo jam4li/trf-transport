@@ -34,8 +34,12 @@ $trf_phone_tel = trf_mod( 'trf_phone_tel' );
 				</a>
 			<?php endif; ?>
 			<ul class="trf-footer__list">
-				<li><a href="<?php echo esc_url( trf_contact_url() ); ?>"><?php esc_html_e( 'صفحه تماس', 'trf-theme' ); ?></a></li>
-				<li><a href="<?php echo esc_url( trf_tracking_url() ); ?>"><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></a></li>
+				<?php if ( trf_contact_url() ) : ?>
+					<li><a href="<?php echo esc_url( trf_contact_url() ); ?>"><?php esc_html_e( 'صفحه تماس', 'trf-theme' ); ?></a></li>
+				<?php endif; ?>
+				<?php if ( trf_tracking_url() ) : ?>
+					<li><a href="<?php echo esc_url( trf_tracking_url() ); ?>"><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></a></li>
+				<?php endif; ?>
 			</ul>
 			<a class="trf-btn trf-btn--primary trf-footer__cta" href="<?php echo esc_url( trf_quote_cta_url() ); ?>" data-trf-quote-open>
 				<?php echo trf_icon( 'file' ); ?>

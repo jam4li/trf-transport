@@ -294,11 +294,20 @@ function trf_home_articles_query() {
  * @return array<int, array{label:string,url:string}>
  */
 function trf_footer_services_fallback() {
-	return array(
+	$items = array(
 		array( 'label' => 'حمل و نقل جاده‌ای', 'url' => trf_permalink_for( 'road-transport' ) ),
 		array( 'label' => 'حمل و نقل دریایی', 'url' => trf_permalink_for( 'sea-transport' ) ),
 		array( 'label' => 'حمل و نقل ریلی', 'url' => trf_permalink_for( 'rail-transport' ) ),
 		array( 'label' => 'حمل و نقل هوایی', 'url' => trf_permalink_for( 'air-transport' ) ),
+	);
+
+	return array_values(
+		array_filter(
+			$items,
+			static function ( $item ) {
+				return ! empty( $item['url'] );
+			}
+		)
 	);
 }
 

@@ -11,18 +11,21 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $trf_phone     = trf_mod( 'trf_phone' );
 $trf_phone_tel = trf_mod( 'trf_phone_tel' );
+$trf_tracking  = trf_tracking_url();
 ?>
 <section class="trf-hero" aria-labelledby="trf-hero-title">
 	<div class="trf-hero__media">
 		<img src="<?php echo esc_url( trf_asset( 'img/about.webp' ) ); ?>" alt="" width="1600" height="900" fetchpriority="high" decoding="async">
 	</div>
 	<div class="trf-container trf-hero__content">
-		<p class="trf-eyebrow trf-eyebrow--light">بیش از ۲۰ سال لجستیک بین‌المللی</p>
-		<h1 id="trf-hero-title">حمل مطمئن بار، از ایران تا سراسر جهان</h1>
-		<p class="trf-hero__lead">دریایی، جاده‌ای، ریلی و هوایی — با ترخیص کالا، پوشش بیمه و شبکه نمایندگان در مرزها و کشورهای مقصد.</p>
+		<p class="trf-eyebrow trf-eyebrow--light"><?php echo esc_html( trf_mod( 'trf_hero_eyebrow' ) ); ?></p>
+		<h1 id="trf-hero-title"><?php echo esc_html( trf_mod( 'trf_hero_title' ) ); ?></h1>
+		<p class="trf-hero__lead"><?php echo esc_html( trf_mod( 'trf_hero_lead' ) ); ?></p>
 		<div class="trf-hero__actions">
 			<a class="trf-btn trf-btn--primary" href="#quote" data-trf-quote-open><?php echo trf_icon( 'file' ); ?><?php esc_html_e( 'استعلام قیمت حمل', 'trf-theme' ); ?></a>
-			<a class="trf-btn trf-btn--ghost" href="<?php echo esc_url( trf_tracking_url() ); ?>"><?php echo trf_icon( 'package' ); ?><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></a>
+			<?php if ( $trf_tracking ) : ?>
+				<a class="trf-btn trf-btn--ghost" href="<?php echo esc_url( $trf_tracking ); ?>"><?php echo trf_icon( 'package' ); ?><?php esc_html_e( 'استعلام وضعیت بار', 'trf-theme' ); ?></a>
+			<?php endif; ?>
 		</div>
 		<ul class="trf-hero__chips">
 			<li><?php echo trf_icon( 'badge' ); ?>مجوزهای قانونی</li>
