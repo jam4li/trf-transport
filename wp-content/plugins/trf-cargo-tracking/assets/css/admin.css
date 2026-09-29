@@ -27,6 +27,51 @@
 	display: block;
 }
 
+.trf-track-gallery-item.is-file {
+	background: #fff;
+}
+
+.trf-track-gallery-file {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 6px;
+	width: 100%;
+	height: 100%;
+	padding: 10px 8px;
+	box-sizing: border-box;
+	text-decoration: none;
+	color: #1d2327;
+	text-align: center;
+}
+
+.trf-track-gallery-file:hover {
+	background: #f0f6fc;
+}
+
+.trf-track-gallery-file__badge {
+	display: inline-block;
+	padding: 2px 8px;
+	border-radius: 3px;
+	background: #d63638;
+	color: #fff;
+	font-size: 11px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 1.4;
+}
+
+.trf-track-gallery-file__name {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 3;
+	overflow: hidden;
+	font-size: 11px;
+	line-height: 1.3;
+	word-break: break-all;
+}
+
 .trf-track-gallery-remove {
 	position: absolute;
 	top: 2px;
@@ -42,6 +87,24 @@
 	text-align: center;
 	cursor: pointer;
 	text-decoration: none !important;
+	z-index: 1;
+}
+
+.trf-track-list-file {
+	display: inline-flex;
+	vertical-align: middle;
+}
+
+.trf-track-list-file__badge {
+	display: inline-block;
+	padding: 4px 7px;
+	border-radius: 4px;
+	background: #d63638;
+	color: #fff;
+	font-size: 10px;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 1.2;
 }
 
 .trf-track-admin-form .ltr {

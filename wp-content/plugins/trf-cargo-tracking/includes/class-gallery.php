@@ -1,8 +1,8 @@
 <?php
 /**
- * Image gallery helpers for tracking records.
+ * Media gallery helpers for tracking records (images and PDFs).
  *
- * Stores JSON in gallery_urls and keeps thumbnail_url as the first image
+ * Stores JSON in gallery_urls and keeps thumbnail_url as the first item
  * for compatibility with the original Trust frontend payload.
  *
  * @package TRF_Cargo_Tracking
@@ -83,6 +83,51 @@ class TRF_Cargo_Tracking_Gallery {
 		}
 
 		return $url;
+	}
+
+	/**
+	 * Path portion of a URL (query/hash stripped).
+	 *
+	 * @param string $url URL or path.
+	 * @return string
+	 */
+	public static function path_from_url( $url ) {
+		$path = wp_parse_url( (string) $url, PHP_URL_PATH );
+		return is_string( $path ) ? $path : '';
+	}
+
+	/**
+	 * Whether a media URL points to a PDF.
+	 *
+	 * @param string $url URL or path.
+	 * @return bool
+	 */
+	public static function is_pdf( $url ) {
+		$path = self::path_from_url( $url );
+		return '' !== $path && (bool) preg_match( '/\.pdf$/i', $path );
+	}
+
+	/**
+	 * Whether a media URL points to a common image type.
+	 *
+	 * @param string $url URL or path.
+	 * @return bool
+	 */
+	public static function is_image( $url ) {
+		$path = self::path_from_url( $url );
+		return '' !== $path && (bool) preg_match( '/\.(jpe?g|png|gif|webp|bmp|svg)$/i', $path );
+	}
+
+	/**
+	 * Basename for display (e.g. waybill.pdf).
+	 *
+	 * @param string $url URL or path.
+	 * @return string
+	 */
+	public static function basename_from_url( $url ) {
+		$path = self::path_from_url( $url );
+		$name = $path ? wp_basename( $path ) : '';
+		return $name ? $name : 'PDF';
 	}
 
 	/**
@@ -195,21 +240,31 @@ class TRF_Cargo_Tracking_Gallery {
 		$urls = self::normalize_urls( $urls );
 		?>
 		<div class="trf-track-gallery-field" data-trf-gallery>
-			<label><?php esc_html_e( 'تصاویر بارنامه', 'trf-cargo-tracking' ); ?></label>
+			<label><?php esc_html_e( 'مدارک بارنامه', 'trf-cargo-tracking' ); ?></label>
 			<div class="trf-track-gallery-preview" data-trf-gallery-preview>
 				<?php foreach ( $urls as $url ) : ?>
-					<?php $src = self::public_url( $url ); ?>
-					<div class="trf-track-gallery-item" data-url="<?php echo esc_attr( $src ); ?>">
-						<img src="<?php echo esc_url( $src ); ?>" alt="">
+					<?php
+					$src = self::public_url( $url );
+					$pdf = self::is_pdf( $src );
+					?>
+					<div class="trf-track-gallery-item<?php echo $pdf ? ' is-file' : ''; ?>" data-url="<?php echo esc_attr( $src ); ?>">
+						<?php if ( $pdf ) : ?>
+							<a class="trf-track-gallery-file" href="<?php echo esc_url( $src ); ?>" target="_blank" rel="noopener noreferrer">
+								<span class="trf-track-gallery-file__badge">PDF</span>
+								<span class="trf-track-gallery-file__name"><?php echo esc_html( self::basename_from_url( $src ) ); ?></span>
+							</a>
+						<?php else : ?>
+							<img src="<?php echo esc_url( $src ); ?>" alt="">
+						<?php endif; ?>
 						<button type="button" class="button-link trf-track-gallery-remove" aria-label="<?php esc_attr_e( 'حذف', 'trf-cargo-tracking' ); ?>">&times;</button>
 						<input type="hidden" name="gallery_urls[]" value="<?php echo esc_attr( $src ); ?>">
 					</div>
 				<?php endforeach; ?>
 			</div>
 			<p>
-				<button type="button" class="button" data-trf-gallery-add><?php esc_html_e( 'افزودن / انتخاب تصاویر', 'trf-cargo-tracking' ); ?></button>
+				<button type="button" class="button" data-trf-gallery-add><?php esc_html_e( 'افزودن / انتخاب فایل‌ها', 'trf-cargo-tracking' ); ?></button>
 			</p>
-			<p class="description"><?php esc_html_e( 'از کتابخانه رسانه وردپرس چند تصویر انتخاب کنید. ترتیب نمایش همان ترتیب انتخاب است.', 'trf-cargo-tracking' ); ?></p>
+			<p class="description"><?php esc_html_e( 'از کتابخانه رسانه وردپرس چند تصویر یا فایل PDF انتخاب کنید. ترتیب نمایش همان ترتیب انتخاب است.', 'trf-cargo-tracking' ); ?></p>
 		</div>
 		<?php
 	}

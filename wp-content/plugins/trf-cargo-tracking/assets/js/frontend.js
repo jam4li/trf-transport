@@ -47,14 +47,46 @@
 		);
 	}
 
-	function renderGallery(images, code) {
-		if (!images.length) {
+	function isPdf(url) {
+		return /\.pdf(\?|#|$)/i.test(url || "");
+	}
+
+	function fileName(url) {
+		try {
+			var path = String(url || "").split(/[?#]/)[0];
+			var name = decodeURIComponent(path.substring(path.lastIndexOf("/") + 1));
+			return name || "PDF";
+		} catch (e) {
+			return "PDF";
+		}
+	}
+
+	function renderGallery(files, code) {
+		if (!files.length) {
 			return "";
 		}
 
-		var thumbs = images
+		var items = files
 			.map(function (url, index) {
 				var safe = escapeHtml(url);
+
+				if (isPdf(url)) {
+					var pdfLabel = escapeHtml("فایل PDF " + (index + 1) + " محموله " + code);
+					return (
+						'<a class="trf-track__file" href="' +
+						safe +
+						'" target="_blank" rel="noopener noreferrer" aria-label="' +
+						pdfLabel +
+						'">' +
+						'<span class="trf-track__file-badge">PDF</span>' +
+						'<span class="trf-track__file-name">' +
+						escapeHtml(fileName(url)) +
+						"</span>" +
+						'<span class="trf-track__file-hint">مشاهده / دانلود</span>' +
+						"</a>"
+					);
+				}
+
 				var alt = escapeHtml("تصویر " + (index + 1) + " محموله " + code);
 				return (
 					'<button type="button" class="trf-track__thumb" data-trf-lightbox-src="' +
@@ -73,10 +105,10 @@
 			.join("");
 
 		return (
-			'<section class="trf-track__gallery" aria-label="تصاویر محموله">' +
-			'<h3 class="trf-track__gallery-title">تصاویر محموله</h3>' +
+			'<section class="trf-track__gallery" aria-label="مدارک محموله">' +
+			'<h3 class="trf-track__gallery-title">مدارک محموله</h3>' +
 			'<div class="trf-track__gallery-grid">' +
-			thumbs +
+			items +
 			"</div></section>"
 		);
 	}
@@ -88,7 +120,7 @@
 			return;
 		}
 
-		var images = Array.isArray(payload.gallery) ? payload.gallery : [];
+		var files = Array.isArray(payload.gallery) ? payload.gallery : [];
 		var code = payload.validation || "";
 
 		result.innerHTML =
@@ -105,7 +137,7 @@
 			'<div class="trf-track__description">' +
 			escapeHtml(payload.description).replace(/\n/g, "<br>") +
 			"</div>" +
-			renderGallery(images, code) +
+			renderGallery(files, code) +
 			"</article>";
 	}
 

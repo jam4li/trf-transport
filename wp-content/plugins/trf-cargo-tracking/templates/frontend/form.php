@@ -16,7 +16,7 @@ if ( ! defined( 'ABSPATH' ) ) {
 
 $ok     = is_array( $result ) && isset( $result['status'] ) && 'ok' === $result['status'];
 $fail   = is_array( $result ) && isset( $result['status'] ) && 'fail' === $result['status'];
-$images = ( $ok && ! empty( $result['gallery'] ) && is_array( $result['gallery'] ) ) ? $result['gallery'] : array();
+$media = ( $ok && ! empty( $result['gallery'] ) && is_array( $result['gallery'] ) ) ? $result['gallery'] : array();
 if ( '' === $label ) {
 	$label = __( 'کد رهگیری', 'trf-cargo-tracking' );
 }
@@ -61,27 +61,49 @@ if ( '' === $button ) {
 					</p>
 				</header>
 				<div class="trf-track__description"><?php echo nl2br( esc_html( $result['description'] ) ); ?></div>
-				<?php if ( $images ) : ?>
-					<section class="trf-track__gallery" aria-label="<?php esc_attr_e( 'تصاویر محموله', 'trf-cargo-tracking' ); ?>">
-						<h3 class="trf-track__gallery-title"><?php esc_html_e( 'تصاویر محموله', 'trf-cargo-tracking' ); ?></h3>
+				<?php if ( $media ) : ?>
+					<section class="trf-track__gallery" aria-label="<?php esc_attr_e( 'مدارک محموله', 'trf-cargo-tracking' ); ?>">
+						<h3 class="trf-track__gallery-title"><?php esc_html_e( 'مدارک محموله', 'trf-cargo-tracking' ); ?></h3>
 						<div class="trf-track__gallery-grid">
-							<?php foreach ( $images as $index => $url ) : ?>
-								<?php
-								$alt = sprintf(
-									/* translators: 1: tracking code, 2: image number */
-									__( 'تصویر %2$d محموله %1$s', 'trf-cargo-tracking' ),
-									$result['validation'],
-									$index + 1
-								);
-								?>
-								<button
-									type="button"
-									class="trf-track__thumb"
-									data-trf-lightbox-src="<?php echo esc_url( $url ); ?>"
-									data-trf-lightbox-alt="<?php echo esc_attr( $alt ); ?>"
-								>
-									<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="lazy">
-								</button>
+							<?php foreach ( $media as $index => $url ) : ?>
+								<?php if ( TRF_Cargo_Tracking_Gallery::is_pdf( $url ) ) : ?>
+									<?php
+									$pdf_label = sprintf(
+										/* translators: 1: tracking code, 2: file number */
+										__( 'فایل PDF %2$d محموله %1$s', 'trf-cargo-tracking' ),
+										$result['validation'],
+										$index + 1
+									);
+									?>
+									<a
+										class="trf-track__file"
+										href="<?php echo esc_url( $url ); ?>"
+										target="_blank"
+										rel="noopener noreferrer"
+										aria-label="<?php echo esc_attr( $pdf_label ); ?>"
+									>
+										<span class="trf-track__file-badge">PDF</span>
+										<span class="trf-track__file-name"><?php echo esc_html( TRF_Cargo_Tracking_Gallery::basename_from_url( $url ) ); ?></span>
+										<span class="trf-track__file-hint"><?php esc_html_e( 'مشاهده / دانلود', 'trf-cargo-tracking' ); ?></span>
+									</a>
+								<?php else : ?>
+									<?php
+									$alt = sprintf(
+										/* translators: 1: tracking code, 2: image number */
+										__( 'تصویر %2$d محموله %1$s', 'trf-cargo-tracking' ),
+										$result['validation'],
+										$index + 1
+									);
+									?>
+									<button
+										type="button"
+										class="trf-track__thumb"
+										data-trf-lightbox-src="<?php echo esc_url( $url ); ?>"
+										data-trf-lightbox-alt="<?php echo esc_attr( $alt ); ?>"
+									>
+										<img src="<?php echo esc_url( $url ); ?>" alt="<?php echo esc_attr( $alt ); ?>" loading="lazy">
+									</button>
+								<?php endif; ?>
 							<?php endforeach; ?>
 						</div>
 					</section>
@@ -89,7 +111,7 @@ if ( '' === $button ) {
 			</article>
 		<?php else : ?>
 			<div class="trf-track__notice trf-track__notice--idle">
-				<p><?php esc_html_e( 'پس از وارد کردن کد، وضعیت و تصاویر محموله اینجا نمایش داده می‌شود.', 'trf-cargo-tracking' ); ?></p>
+				<p><?php esc_html_e( 'پس از وارد کردن کد، وضعیت و مدارک محموله اینجا نمایش داده می‌شود.', 'trf-cargo-tracking' ); ?></p>
 			</div>
 		<?php endif; ?>
 	</div>

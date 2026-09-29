@@ -247,6 +247,58 @@
 	display: block;
 }
 
+.trf-track__file {
+	display: flex;
+	flex-direction: column;
+	align-items: center;
+	justify-content: center;
+	gap: 0.45rem;
+	min-height: 160px;
+	padding: 1rem 0.85rem;
+	border: 1px solid var(--trf-line);
+	border-radius: 12px;
+	background: var(--trf-surface);
+	color: var(--trf-ink);
+	text-decoration: none;
+	text-align: center;
+	transition: border-color 0.18s ease, transform 0.18s ease, background 0.18s ease;
+}
+
+.trf-track__file:hover {
+	border-color: rgba(14, 88, 84, 0.35);
+	background: var(--trf-white);
+	transform: translateY(-1px);
+}
+
+.trf-track__file-badge {
+	display: inline-block;
+	padding: 0.2rem 0.55rem;
+	border-radius: 6px;
+	background: #c0392b;
+	color: #fff;
+	font-size: 0.75rem;
+	font-weight: 700;
+	letter-spacing: 0.04em;
+	line-height: 1.3;
+}
+
+.trf-track__file-name {
+	display: -webkit-box;
+	-webkit-box-orient: vertical;
+	-webkit-line-clamp: 2;
+	overflow: hidden;
+	max-width: 100%;
+	font-size: 0.85rem;
+	font-weight: 600;
+	line-height: 1.35;
+	word-break: break-word;
+}
+
+.trf-track__file-hint {
+	font-size: 0.78rem;
+	color: var(--trf-muted, #5b6b68);
+}
+
 /* Lightbox */
 .trf-track-lightbox {
 	position: fixed;

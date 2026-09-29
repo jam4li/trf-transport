@@ -39,7 +39,7 @@ $skipped    = isset( $_GET['skipped'] ) ? absint( $_GET['skipped'] ) : 0; // php
 	<ol>
 		<li><?php esc_html_e( 'ستون ۱: کد رهگیری (validation)', 'trf-cargo-tracking' ); ?></li>
 		<li><?php esc_html_e( 'ستون ۲: توضیحات', 'trf-cargo-tracking' ); ?></li>
-		<li><?php esc_html_e( 'ستون ۳ (اختیاری): آدرس تصاویر، جدا شده با |', 'trf-cargo-tracking' ); ?></li>
+		<li><?php esc_html_e( 'ستون ۳ (اختیاری): آدرس تصاویر یا PDF، جدا شده با |', 'trf-cargo-tracking' ); ?></li>
 	</ol>
 
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">

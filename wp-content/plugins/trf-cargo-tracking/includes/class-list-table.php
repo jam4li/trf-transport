@@ -42,7 +42,7 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 			'id'          => __( 'شناسه', 'trf-cargo-tracking' ),
 			'validation'  => __( 'کد رهگیری', 'trf-cargo-tracking' ),
 			'description' => __( 'توضیحات', 'trf-cargo-tracking' ),
-			'images'      => __( 'تصاویر', 'trf-cargo-tracking' ),
+			'images'      => __( 'مدارک', 'trf-cargo-tracking' ),
 		);
 	}
 
@@ -148,6 +148,14 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 
 		$first = TRF_Cargo_Tracking_Gallery::public_url( $gallery[0] );
 		$count = count( $gallery );
+
+		if ( TRF_Cargo_Tracking_Gallery::is_pdf( $first ) ) {
+			return sprintf(
+				'<span class="trf-track-list-file" title="%1$s"><span class="trf-track-list-file__badge">PDF</span></span> <span>%2$d</span>',
+				esc_attr( TRF_Cargo_Tracking_Gallery::basename_from_url( $first ) ),
+				$count
+			);
+		}
 
 		return sprintf(
 			'<img src="%1$s" alt="" width="40" height="40" style="object-fit:cover;border-radius:4px;vertical-align:middle;" /> <span>%2$d</span>',
