@@ -13,7 +13,11 @@
 		}
 	}
 
-	function addItem($preview, url) {
+	function galleryName($field) {
+		return $field.attr("data-trf-gallery-name") || "gallery_urls[]";
+	}
+
+	function addItem($preview, url, inputName) {
 		if (!url) {
 			return;
 		}
@@ -30,7 +34,7 @@
 					'<span class="trf-track-gallery-file__name"></span>' +
 					"</a>" +
 					'<button type="button" class="button-link trf-track-gallery-remove" aria-label="حذف">&times;</button>' +
-					'<input type="hidden" name="gallery_urls[]" value="">' +
+					'<input type="hidden" name="" value="">' +
 					"</div>"
 			);
 			$item.find("a").attr("href", url);
@@ -40,21 +44,42 @@
 				'<div class="trf-track-gallery-item" data-url="">' +
 					'<img alt="">' +
 					'<button type="button" class="button-link trf-track-gallery-remove" aria-label="حذف">&times;</button>' +
-					'<input type="hidden" name="gallery_urls[]" value="">' +
+					'<input type="hidden" name="" value="">' +
 					"</div>"
 			);
 			$item.find("img").attr("src", url);
 		}
 
 		$item.attr("data-url", url);
-		$item.find('input[name="gallery_urls[]"]').val(url);
+		$item.find("input[type='hidden']").attr("name", inputName).val(url);
 		$preview.append($item);
+	}
+
+	function syncEntryRemoveState() {
+		var $entries = $("[data-trf-entries] [data-trf-entry]");
+		$entries.find("[data-trf-entry-remove]").prop("disabled", $entries.length < 2);
+	}
+
+	function initJalaliPicker() {
+		if (typeof jalaliDatepicker === "undefined" || !jalaliDatepicker.startWatch) {
+			return;
+		}
+
+		jalaliDatepicker.startWatch({
+			time: false,
+			hasSecond: false,
+			hideAfterChange: true,
+			useDropDownYears: false,
+			persianDigits: false,
+			zIndex: 100000,
+		});
 	}
 
 	$(document).on("click", "[data-trf-gallery-add]", function (e) {
 		e.preventDefault();
 		var $field = $(this).closest("[data-trf-gallery]");
 		var $preview = $field.find("[data-trf-gallery-preview]");
+		var inputName = galleryName($field);
 
 		var frame = wp.media({
 			title: "انتخاب مدارک بارنامه",
@@ -76,7 +101,7 @@
 						return;
 					}
 					var url = (data.sizes && data.sizes.large && data.sizes.large.url) || data.url;
-					addItem($preview, url);
+					addItem($preview, url, inputName);
 				});
 		});
 
@@ -86,5 +111,35 @@
 	$(document).on("click", ".trf-track-gallery-remove", function (e) {
 		e.preventDefault();
 		$(this).closest(".trf-track-gallery-item").remove();
+	});
+
+	$(document).on("click", "[data-trf-entry-add]", function (e) {
+		e.preventDefault();
+		var template = document.getElementById("trf-track-entry-template");
+		var $list = $("[data-trf-entries]");
+		if (!template || !$list.length) {
+			return;
+		}
+
+		var html = template.innerHTML.replace(/__INDEX__/g, String(Date.now()));
+		var $row = $(html);
+		$row.find("textarea, input.trf-track-jalali").attr("required", "required");
+		$list.append($row);
+		syncEntryRemoveState();
+	});
+
+	$(document).on("click", "[data-trf-entry-remove]", function (e) {
+		e.preventDefault();
+		var $entries = $("[data-trf-entries] [data-trf-entry]");
+		if ($entries.length < 2) {
+			return;
+		}
+		$(this).closest("[data-trf-entry]").remove();
+		syncEntryRemoveState();
+	});
+
+	$(function () {
+		syncEntryRemoveState();
+		initJalaliPicker();
 	});
 })(jQuery);

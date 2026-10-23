@@ -35,11 +35,12 @@ $skipped    = isset( $_GET['skipped'] ) ? absint( $_GET['skipped'] ) : 0; // php
 		</div>
 	<?php endif; ?>
 
-	<p><?php esc_html_e( 'فایل CSV باید با همان ساختار قبلی Trust برای اعتبارسنجی باشد تا داده‌های موجود قابل درون‌ریزی بمانند:', 'trf-cargo-tracking' ); ?></p>
+	<p><?php esc_html_e( 'هر ردیف CSV یک به‌روزرسانی برای کد رهگیری است. تکرار همان کد، ردیف جدیدی به همان محموله اضافه می‌کند.', 'trf-cargo-tracking' ); ?></p>
 	<ol>
 		<li><?php esc_html_e( 'ستون ۱: کد رهگیری (validation)', 'trf-cargo-tracking' ); ?></li>
 		<li><?php esc_html_e( 'ستون ۲: توضیحات', 'trf-cargo-tracking' ); ?></li>
 		<li><?php esc_html_e( 'ستون ۳ (اختیاری): آدرس تصاویر یا PDF، جدا شده با |', 'trf-cargo-tracking' ); ?></li>
+		<li><?php esc_html_e( 'ستون ۴ (اختیاری): تاریخ نمایش شمسی مثل 1403/08/01 یا میلادی مثل 2024-10-23', 'trf-cargo-tracking' ); ?></li>
 	</ol>
 
 	<form method="post" action="<?php echo esc_url( admin_url( 'admin-post.php' ) ); ?>" enctype="multipart/form-data">

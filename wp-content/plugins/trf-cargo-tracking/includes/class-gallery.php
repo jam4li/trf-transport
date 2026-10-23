@@ -234,12 +234,14 @@ class TRF_Cargo_Tracking_Gallery {
 	/**
 	 * Media-library picker used on add/edit screens.
 	 *
-	 * @param string[] $urls Current URLs.
+	 * @param string[] $urls       Current URLs.
+	 * @param string   $input_name Hidden input name, e.g. entries[0][gallery_urls][].
 	 */
-	public static function render_admin_field( array $urls = array() ) {
-		$urls = self::normalize_urls( $urls );
+	public static function render_admin_field( array $urls = array(), $input_name = 'gallery_urls[]' ) {
+		$urls       = self::normalize_urls( $urls );
+		$input_name = $input_name ? $input_name : 'gallery_urls[]';
 		?>
-		<div class="trf-track-gallery-field" data-trf-gallery>
+		<div class="trf-track-gallery-field" data-trf-gallery data-trf-gallery-name="<?php echo esc_attr( $input_name ); ?>">
 			<label><?php esc_html_e( 'مدارک بارنامه', 'trf-cargo-tracking' ); ?></label>
 			<div class="trf-track-gallery-preview" data-trf-gallery-preview>
 				<?php foreach ( $urls as $url ) : ?>
@@ -257,7 +259,7 @@ class TRF_Cargo_Tracking_Gallery {
 							<img src="<?php echo esc_url( $src ); ?>" alt="">
 						<?php endif; ?>
 						<button type="button" class="button-link trf-track-gallery-remove" aria-label="<?php esc_attr_e( 'حذف', 'trf-cargo-tracking' ); ?>">&times;</button>
-						<input type="hidden" name="gallery_urls[]" value="<?php echo esc_attr( $src ); ?>">
+						<input type="hidden" name="<?php echo esc_attr( $input_name ); ?>" value="<?php echo esc_attr( $src ); ?>">
 					</div>
 				<?php endforeach; ?>
 			</div>

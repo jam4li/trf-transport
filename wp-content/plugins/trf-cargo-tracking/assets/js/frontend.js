@@ -13,15 +13,26 @@
 		return;
 	}
 
+	var i18n = trfCargoTracking.i18n || {};
 	var defaultSubmitText = submitLabel ? submitLabel.textContent : "";
-	var busySubmitText = "در حال بررسی…";
+	var busySubmitText = i18n.busy || "در حال بررسی…";
 	var lightbox = null;
 	var lastFocus = null;
+
+	function t(key, fallback) {
+		return i18n[key] || fallback;
+	}
 
 	function escapeHtml(value) {
 		var div = document.createElement("div");
 		div.appendChild(document.createTextNode(value == null ? "" : String(value)));
 		return div.innerHTML;
+	}
+
+	function toPersianDigits(value) {
+		return String(value == null ? "" : value).replace(/[0-9]/g, function (digit) {
+			return "۰۱۲۳۴۵۶۷۸۹"[digit];
+		});
 	}
 
 	function setBusy(isBusy) {
@@ -34,16 +45,19 @@
 		input.setAttribute("aria-busy", isBusy ? "true" : "false");
 	}
 
-	function notice(kind, message, role) {
+	function notice(kind, title, message, role) {
 		var roleAttr = role ? ' role="' + role + '"' : "";
+		var body = message ? "<p>" + escapeHtml(message) + "</p>" : "";
 		return (
 			'<div class="trf-track__notice trf-track__notice--' +
 			kind +
 			'"' +
 			roleAttr +
-			"><p>" +
-			escapeHtml(message) +
-			"</p></div>"
+			"><p class=\"trf-track__notice-title\">" +
+			escapeHtml(title) +
+			"</p>" +
+			body +
+			"</div>"
 		);
 	}
 
@@ -61,7 +75,21 @@
 		}
 	}
 
-	function renderGallery(files, code) {
+	function headlineFromDescription(description) {
+		var text = String(description || "").replace(/^\s+|\s+$/g, "");
+		if (!text) {
+			return t("found", "محموله یافت شد");
+		}
+		var line = text.split(/\r?\n/)[0].replace(/^\s+|\s+$/g, "");
+		return line.length > 88 ? line.slice(0, 88) + "…" : line;
+	}
+
+	function updatesLabel(count) {
+		count = Math.max(1, count);
+		return toPersianDigits(count) + " " + t("updates", "به‌روزرسانی");
+	}
+
+	function renderFiles(files, code) {
 		if (!files.length) {
 			return "";
 		}
@@ -81,9 +109,7 @@
 						'<span class="trf-track__file-badge">PDF</span>' +
 						'<span class="trf-track__file-name">' +
 						escapeHtml(fileName(url)) +
-						"</span>" +
-						'<span class="trf-track__file-hint">مشاهده / دانلود</span>' +
-						"</a>"
+						"</span></a>"
 					);
 				}
 
@@ -98,47 +124,175 @@
 					safe +
 					'" alt="' +
 					alt +
-					'" loading="lazy">' +
-					"</button>"
+					'" loading="lazy"></button>'
 				);
 			})
 			.join("");
 
 		return (
-			'<section class="trf-track__gallery" aria-label="مدارک محموله">' +
-			'<h3 class="trf-track__gallery-title">مدارک محموله</h3>' +
-			'<div class="trf-track__gallery-grid">' +
+			'<section class="trf-track__files" aria-label="' +
+			escapeHtml(t("documents", "مدارک")) +
+			'">' +
+			'<p class="trf-track__files-label">' +
+			escapeHtml(t("documents", "مدارک")) +
+			'</p><div class="trf-track__files-grid">' +
 			items +
 			"</div></section>"
 		);
 	}
 
+	function renderEntries(entries, code) {
+		return (
+			'<ol class="trf-track__timeline">' +
+			entries
+				.map(function (entry, index) {
+					var date = entry && entry.event_date ? String(entry.event_date) : "";
+					var description = entry && entry.description ? String(entry.description) : "";
+					var files = entry && Array.isArray(entry.gallery) ? entry.gallery : [];
+					var isCurrent = index === 0;
+					var dateHtml = date
+						? '<time class="trf-track__date" datetime="' +
+						  escapeHtml(date) +
+						  '">' +
+						  escapeHtml(toPersianDigits(date)) +
+						  "</time>"
+						: "";
+					var flagHtml =
+						isCurrent && entries.length > 1
+							? '<p class="trf-track__event-flag">' + escapeHtml(t("latest", "آخرین وضعیت")) + "</p>"
+							: "";
+					var descHtml = description
+						? '<div class="trf-track__description">' + escapeHtml(description).replace(/\n/g, "<br>") + "</div>"
+						: "";
+
+					return (
+						'<li class="trf-track__event' +
+						(isCurrent ? " is-current" : "") +
+						'">' +
+						'<span class="trf-track__dot" aria-hidden="true"></span>' +
+						dateHtml +
+						'<div class="trf-track__event-body">' +
+						flagHtml +
+						descHtml +
+						renderFiles(files, code) +
+						"</div></li>"
+					);
+				})
+				.join("") +
+			"</ol>"
+		);
+	}
+
 	function render(payload, codeLabel) {
+		root.classList.toggle("has-result", !!(payload && payload.status === "ok"));
+
 		if (!payload || payload.status !== "ok") {
-			var message = (payload && payload.description) || "کد رهگیری یافت نشد.";
-			result.innerHTML = notice("error", message, "alert");
+			var message = (payload && payload.description) || t("notFound", "کد رهگیری یافت نشد.");
+			result.innerHTML = notice("error", message, t("errorHint", ""), "alert");
 			return;
 		}
 
-		var files = Array.isArray(payload.gallery) ? payload.gallery : [];
 		var code = payload.validation || "";
+		var entries =
+			Array.isArray(payload.entries) && payload.entries.length
+				? payload.entries
+				: [
+						{
+							description: payload.description || "",
+							gallery: Array.isArray(payload.gallery) ? payload.gallery : [],
+							event_date: payload.event_date || "",
+						},
+				  ];
+		var latest = entries[0] || {};
+		var latestDate = latest.event_date ? String(latest.event_date) : "";
+		var headline = headlineFromDescription(latest.description);
+		var meta = "";
+
+		if (latestDate) {
+			meta +=
+				'<time datetime="' +
+				escapeHtml(latestDate) +
+				'">' +
+				escapeHtml(toPersianDigits(latestDate)) +
+				"</time>";
+		}
+		meta += "<span>" + escapeHtml(updatesLabel(entries.length)) + "</span>";
 
 		result.innerHTML =
-			'<article class="trf-track__card">' +
-			'<header class="trf-track__card-head">' +
-			'<p class="trf-track__badge">یافت شد</p>' +
-			'<p class="trf-track__code">' +
+			'<article class="trf-track__shipment">' +
+			'<header class="trf-track__summary">' +
+			'<div class="trf-track__summary-main">' +
+			'<p class="trf-track__kicker">' +
+			escapeHtml(t("kicker", "وضعیت محموله")) +
+			"</p>" +
+			'<h3 class="trf-track__headline">' +
+			escapeHtml(headline) +
+			"</h3>" +
+			'<p class="trf-track__meta">' +
+			meta +
+			"</p></div>" +
+			'<div class="trf-track__summary-code">' +
 			'<span class="trf-track__code-label">' +
 			escapeHtml(codeLabel) +
 			"</span>" +
+			'<div class="trf-track__code-row">' +
 			'<code class="trf-track__code-value" dir="ltr">' +
 			escapeHtml(code) +
-			"</code></p></header>" +
-			'<div class="trf-track__description">' +
-			escapeHtml(payload.description).replace(/\n/g, "<br>") +
-			"</div>" +
-			renderGallery(files, code) +
+			'</code><button type="button" class="trf-track__copy" data-trf-copy="' +
+			escapeHtml(code) +
+			'">' +
+			escapeHtml(t("copy", "کپی کد")) +
+			"</button></div></div></header>" +
+			'<h4 class="trf-track__section-title">' +
+			escapeHtml(t("path", "مسیر وضعیت")) +
+			"</h4>" +
+			renderEntries(entries, code) +
 			"</article>";
+	}
+
+	function copyCode(button) {
+		var value = button.getAttribute("data-trf-copy") || "";
+		if (!value) {
+			return;
+		}
+
+		var done = function () {
+			var original = button.getAttribute("data-trf-copy-label") || button.textContent;
+			button.setAttribute("data-trf-copy-label", original);
+			button.textContent = t("copied", "کپی شد");
+			button.classList.add("is-copied");
+			window.setTimeout(function () {
+				button.textContent = original;
+				button.classList.remove("is-copied");
+			}, 1600);
+		};
+
+		var fallback = function () {
+			var field = document.createElement("textarea");
+			field.value = value;
+			field.setAttribute("readonly", "");
+			field.style.position = "fixed";
+			field.style.insetInlineStart = "-9999px";
+			document.body.appendChild(field);
+			field.select();
+			try {
+				document.execCommand("copy");
+			} catch (err) {
+				/* ignore */
+			}
+			document.body.removeChild(field);
+		};
+
+		if (navigator.clipboard && navigator.clipboard.writeText) {
+			navigator.clipboard.writeText(value).then(done).catch(function () {
+				fallback();
+				done();
+			});
+			return;
+		}
+
+		fallback();
+		done();
 	}
 
 	function ensureLightbox() {
@@ -221,6 +375,13 @@
 	});
 
 	result.addEventListener("click", function (event) {
+		var copyBtn = event.target.closest("[data-trf-copy]");
+		if (copyBtn && result.contains(copyBtn)) {
+			event.preventDefault();
+			copyCode(copyBtn);
+			return;
+		}
+
 		var thumb = event.target.closest("[data-trf-lightbox-src]");
 		if (!thumb || !result.contains(thumb)) {
 			return;
@@ -237,7 +398,8 @@
 		}
 
 		setBusy(true);
-		result.innerHTML = notice("busy", "در حال دریافت وضعیت بار…");
+		root.classList.remove("has-result");
+		result.innerHTML = '<div class="trf-track__notice trf-track__notice--busy"><p>' + escapeHtml(t("loading", "در حال دریافت وضعیت بار…")) + "</p></div>";
 
 		var body = new FormData();
 		body.append("action", trfCargoTracking.action);
@@ -260,9 +422,12 @@
 					url.searchParams.set("trf_track", code);
 					window.history.replaceState({}, "", url.toString());
 				}
+				if (result.scrollIntoView) {
+					result.scrollIntoView({ behavior: "smooth", block: "start" });
+				}
 			})
 			.catch(function () {
-				result.innerHTML = notice("error", "خطایی رخ داد. دوباره تلاش کنید.", "alert");
+				result.innerHTML = notice("error", t("error", "خطایی رخ داد. دوباره تلاش کنید."), "", "alert");
 			})
 			.finally(function () {
 				setBusy(false);

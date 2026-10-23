@@ -111,3 +111,52 @@
 	direction: ltr;
 	text-align: left;
 }
+
+.trf-track-entries {
+	display: flex;
+	flex-direction: column;
+	gap: 16px;
+	max-width: 760px;
+	margin: 12px 0 20px;
+}
+
+.trf-track-entry {
+	padding: 16px 18px 8px;
+	border: 1px solid #c3c4c7;
+	border-radius: 6px;
+	background: #fff;
+}
+
+.trf-track-entry__head {
+	display: flex;
+	align-items: center;
+	justify-content: space-between;
+	gap: 12px;
+	margin-bottom: 8px;
+}
+
+.trf-track-entry__remove {
+	color: #b32d2e !important;
+}
+
+.trf-track-entry__remove:disabled {
+	opacity: 0.45;
+	cursor: not-allowed;
+}
+
+.trf-track-entry__recorded {
+	color: #646970;
+}
+
+.trf-track-entry .trf-track-jalali {
+	direction: ltr;
+	text-align: left;
+}
+
+.trf-track-entry .trf-track-gallery-field {
+	margin-top: 8px;
+}
+
+.jdp-container {
+	font-family: inherit;
+}

@@ -96,11 +96,24 @@ class TRF_Cargo_Tracking_Admin {
 		);
 
 		if ( in_array( $page, array( 'trf-cargo-tracking', 'trf-cargo-tracking-add' ), true ) ) {
+			wp_enqueue_style(
+				'trf-jalalidatepicker',
+				TRF_TRACK_URL . 'assets/vendor/jalalidatepicker/jalalidatepicker.min.css',
+				array(),
+				TRF_TRACK_VERSION
+			);
+			wp_enqueue_script(
+				'trf-jalalidatepicker',
+				TRF_TRACK_URL . 'assets/vendor/jalalidatepicker/jalalidatepicker.min.js',
+				array(),
+				TRF_TRACK_VERSION,
+				true
+			);
 			wp_enqueue_media();
 			wp_enqueue_script(
 				'trf-cargo-tracking-admin',
 				TRF_TRACK_URL . 'assets/js/admin.js',
-				array( 'jquery' ),
+				array( 'jquery', 'trf-jalalidatepicker' ),
 				TRF_TRACK_VERSION,
 				true
 			);
@@ -131,22 +144,22 @@ class TRF_Cargo_Tracking_Admin {
 			return;
 		}
 
-		$raw = isset( $_REQUEST['shipment'] ) ? wp_unslash( $_REQUEST['shipment'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
-		$ids = array_filter( array_map( 'absint', (array) $raw ) );
-		if ( empty( $ids ) ) {
+		$raw   = isset( $_REQUEST['shipment'] ) ? wp_unslash( $_REQUEST['shipment'] ) : array(); // phpcs:ignore WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		$codes = array_filter( array_map( 'sanitize_text_field', (array) $raw ) );
+		if ( empty( $codes ) ) {
 			return;
 		}
 
 		$nonce = isset( $_REQUEST['_wpnonce'] ) ? sanitize_text_field( wp_unslash( $_REQUEST['_wpnonce'] ) ) : '';
 		$ok    = wp_verify_nonce( $nonce, 'bulk-trf_shipments' );
-		if ( ! $ok && 1 === count( $ids ) ) {
-			$ok = wp_verify_nonce( $nonce, 'trf_track_delete_' . $ids[0] );
+		if ( ! $ok && 1 === count( $codes ) ) {
+			$ok = wp_verify_nonce( $nonce, self::delete_nonce_action( reset( $codes ) ) );
 		}
 		if ( ! $ok ) {
 			return;
 		}
 
-		$deleted = TRF_Cargo_Tracking_Repository::delete_many( $ids );
+		$deleted = TRF_Cargo_Tracking_Repository::delete_many_codes( $codes );
 		wp_safe_redirect(
 			add_query_arg(
 				array(
@@ -168,25 +181,20 @@ class TRF_Cargo_Tracking_Admin {
 		}
 		check_admin_referer( 'trf_track_save' );
 
-		$id          = isset( $_POST['id'] ) ? absint( $_POST['id'] ) : 0;
-		$code        = isset( $_POST['validation'] ) ? sanitize_text_field( wp_unslash( $_POST['validation'] ) ) : '';
-		$description = isset( $_POST['description'] ) ? sanitize_textarea_field( wp_unslash( $_POST['description'] ) ) : '';
-		$urls        = TRF_Cargo_Tracking_Gallery::urls_from_request();
+		$code   = isset( $_POST['validation'] ) ? sanitize_text_field( wp_unslash( $_POST['validation'] ) ) : '';
+		$is_new = empty( $_POST['is_edit'] );
+		$result = TRF_Cargo_Tracking_Repository::sync_shipment( $code, self::entries_from_request(), $is_new );
 
-		if ( $id ) {
-			$result = TRF_Cargo_Tracking_Repository::update( $id, $description, $urls );
-			$target = add_query_arg(
+		$target = $is_new
+			? admin_url( 'admin.php?page=trf-cargo-tracking-add' )
+			: add_query_arg(
 				array(
 					'page'   => 'trf-cargo-tracking',
 					'action' => 'edit',
-					'id'     => $id,
+					'code'   => $code,
 				),
 				admin_url( 'admin.php' )
 			);
-		} else {
-			$result = TRF_Cargo_Tracking_Repository::insert( $code, $description, $urls );
-			$target = admin_url( 'admin.php?page=trf-cargo-tracking-add' );
-		}
 
 		if ( is_wp_error( $result ) ) {
 			$target = add_query_arg(
@@ -196,18 +204,16 @@ class TRF_Cargo_Tracking_Admin {
 				$target
 			);
 		} else {
-			$target = add_query_arg( array( 'trf_saved' => 1 ), $target );
-			if ( ! $id && is_int( $result ) ) {
-				$target = add_query_arg(
-					array(
-						'page'      => 'trf-cargo-tracking',
-						'action'    => 'edit',
-						'id'        => $result,
-						'trf_saved' => 1,
-					),
-					admin_url( 'admin.php' )
-				);
-			}
+			$saved_code = is_string( $result ) ? $result : $code;
+			$target     = add_query_arg(
+				array(
+					'page'      => 'trf-cargo-tracking',
+					'action'    => 'edit',
+					'code'      => $saved_code,
+					'trf_saved' => 1,
+				),
+				admin_url( 'admin.php' )
+			);
 		}
 
 		wp_safe_redirect( $target );
@@ -279,7 +285,12 @@ class TRF_Cargo_Tracking_Admin {
 	public static function render_list() {
 		$action = isset( $_GET['action'] ) ? sanitize_key( wp_unslash( $_GET['action'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		if ( 'edit' === $action ) {
-			self::render_form( absint( isset( $_GET['id'] ) ? $_GET['id'] : 0 ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			$code = isset( $_GET['code'] ) ? sanitize_text_field( wp_unslash( $_GET['code'] ) ) : ''; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+			if ( '' === $code && ! empty( $_GET['id'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$row  = TRF_Cargo_Tracking_Repository::find( absint( $_GET['id'] ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
+				$code = $row ? $row->validation : '';
+			}
+			self::render_form( $code );
 			return;
 		}
 
@@ -294,17 +305,19 @@ class TRF_Cargo_Tracking_Admin {
 	 * Add screen.
 	 */
 	public static function render_add() {
-		self::render_form( 0 );
+		self::render_form( '' );
 	}
 
 	/**
 	 * Add/edit form.
 	 *
-	 * @param int $id Row ID, 0 for new.
+	 * @param string $code Tracking code, empty for new.
 	 */
-	public static function render_form( $id ) {
-		$row     = $id ? TRF_Cargo_Tracking_Repository::find( $id ) : null;
-		$gallery = $row ? TRF_Cargo_Tracking_Gallery::from_row( $row ) : array();
+	public static function render_form( $code ) {
+		$code     = sanitize_text_field( $code );
+		$entries  = '' !== $code ? TRF_Cargo_Tracking_Repository::find_all_by_code( $code ) : array();
+		$is_edit  = ! empty( $entries );
+		$notfound = ( '' !== $code && ! $is_edit && isset( $_GET['action'] ) && 'edit' === sanitize_key( wp_unslash( $_GET['action'] ) ) ); // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		include TRF_TRACK_DIR . 'templates/admin/form.php';
 	}
 
@@ -343,5 +356,104 @@ class TRF_Cargo_Tracking_Admin {
 		if ( ! empty( $_GET['trf_error'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 			echo '<div class="notice notice-error is-dismissible"><p>' . esc_html( sanitize_text_field( wp_unslash( $_GET['trf_error'] ) ) ) . '</p></div>'; // phpcs:ignore WordPress.Security.NonceVerification.Recommended
 		}
+	}
+
+	/**
+	 * Nonce action for deleting a tracking code.
+	 *
+	 * @param string $code Tracking code.
+	 * @return string
+	 */
+	public static function delete_nonce_action( $code ) {
+		return 'trf_track_delete_' . md5( (string) $code );
+	}
+
+	/**
+	 * Parse repeater rows from POST.
+	 *
+	 * @return array
+	 */
+	private static function entries_from_request() {
+		$raw = array();
+		if ( isset( $_POST['entries'] ) && is_array( $_POST['entries'] ) ) { // phpcs:ignore WordPress.Security.NonceVerification.Missing
+			$raw = wp_unslash( $_POST['entries'] ); // phpcs:ignore WordPress.Security.NonceVerification.Missing, WordPress.Security.ValidatedSanitizedInput.InputNotSanitized
+		}
+
+		$entries = array();
+		foreach ( $raw as $row ) {
+			if ( ! is_array( $row ) ) {
+				continue;
+			}
+
+			$urls = array();
+			if ( isset( $row['gallery_urls'] ) && is_array( $row['gallery_urls'] ) ) {
+				$urls = TRF_Cargo_Tracking_Gallery::normalize_urls( $row['gallery_urls'] );
+			}
+
+			$entries[] = array(
+				'id'          => isset( $row['id'] ) ? absint( $row['id'] ) : 0,
+				'description' => isset( $row['description'] ) ? sanitize_textarea_field( $row['description'] ) : '',
+				'event_date'  => isset( $row['event_date'] ) ? sanitize_text_field( $row['event_date'] ) : '',
+				'urls'        => $urls,
+			);
+		}
+
+		return $entries;
+	}
+
+	/**
+	 * Markup for one admin update row.
+	 *
+	 * @param int         $index   Repeater index.
+	 * @param object|null $entry   Existing row.
+	 * @param bool        $is_tpl  Whether this is the JS template.
+	 */
+	public static function render_entry_row( $index, $entry = null, $is_tpl = false ) {
+		$exists      = $entry instanceof stdClass;
+		$id          = $exists ? (int) $entry->id : 0;
+		$description = $exists ? $entry->description : '';
+		$event_date  = ( $exists && ! empty( $entry->event_date ) ) ? TRF_Cargo_Tracking_Jalali::from_gregorian_date( $entry->event_date ) : '';
+		$created_at  = ( $exists && ! empty( $entry->created_at ) ) ? TRF_Cargo_Tracking_Jalali::from_gregorian_datetime( $entry->created_at ) : '';
+		$gallery     = $exists ? TRF_Cargo_Tracking_Gallery::from_row( $entry ) : array();
+		$prefix      = 'entries[' . $index . ']';
+		?>
+		<div class="trf-track-entry" data-trf-entry>
+			<div class="trf-track-entry__head">
+				<strong><?php esc_html_e( 'ردیف به‌روزرسانی', 'trf-cargo-tracking' ); ?></strong>
+				<button type="button" class="button-link trf-track-entry__remove" data-trf-entry-remove><?php esc_html_e( 'حذف ردیف', 'trf-cargo-tracking' ); ?></button>
+			</div>
+			<input type="hidden" name="<?php echo esc_attr( $prefix ); ?>[id]" value="<?php echo $is_tpl ? '' : (int) $id; ?>">
+			<p>
+				<label>
+					<?php esc_html_e( 'توضیحات / وضعیت بار', 'trf-cargo-tracking' ); ?>
+					<textarea name="<?php echo esc_attr( $prefix ); ?>[description]" class="large-text" rows="4" <?php echo $is_tpl ? '' : 'required'; ?>><?php echo esc_textarea( $description ); ?></textarea>
+				</label>
+			</p>
+			<p>
+				<label>
+					<?php esc_html_e( 'تاریخ نمایش (هجری شمسی)', 'trf-cargo-tracking' ); ?>
+					<input
+						type="text"
+						name="<?php echo esc_attr( $prefix ); ?>[event_date]"
+						class="regular-text trf-track-jalali"
+						data-jdp
+						data-jdp-only-date
+						value="<?php echo esc_attr( $event_date ); ?>"
+						autocomplete="off"
+						<?php echo $is_tpl ? '' : 'required'; ?>
+					>
+				</label>
+			</p>
+			<p class="trf-track-entry__recorded">
+				<span><?php esc_html_e( 'تاریخ ثبت (فقط مدیریت):', 'trf-cargo-tracking' ); ?></span>
+				<?php if ( $created_at ) : ?>
+					<strong><?php echo esc_html( TRF_Cargo_Tracking_Jalali::to_persian_digits( $created_at ) ); ?></strong>
+				<?php else : ?>
+					<em><?php esc_html_e( 'پس از ذخیره پر می‌شود', 'trf-cargo-tracking' ); ?></em>
+				<?php endif; ?>
+			</p>
+			<?php TRF_Cargo_Tracking_Gallery::render_admin_field( $gallery, $prefix . '[gallery_urls][]' ); ?>
+		</div>
+		<?php
 	}
 }

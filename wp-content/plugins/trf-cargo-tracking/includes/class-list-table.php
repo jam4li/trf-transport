@@ -38,11 +38,12 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 	 */
 	public function get_columns() {
 		return array(
-			'cb'          => '<input type="checkbox" />',
-			'id'          => __( 'شناسه', 'trf-cargo-tracking' ),
-			'validation'  => __( 'کد رهگیری', 'trf-cargo-tracking' ),
-			'description' => __( 'توضیحات', 'trf-cargo-tracking' ),
-			'images'      => __( 'مدارک', 'trf-cargo-tracking' ),
+			'cb'           => '<input type="checkbox" />',
+			'validation'   => __( 'کد رهگیری', 'trf-cargo-tracking' ),
+			'description'  => __( 'آخرین توضیحات', 'trf-cargo-tracking' ),
+			'event_date'   => __( 'تاریخ نمایش', 'trf-cargo-tracking' ),
+			'update_count' => __( 'ردیف‌ها', 'trf-cargo-tracking' ),
+			'images'       => __( 'مدارک', 'trf-cargo-tracking' ),
 		);
 	}
 
@@ -53,7 +54,6 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 	 */
 	protected function get_sortable_columns() {
 		return array(
-			'id'         => array( 'id', true ),
 			'validation' => array( 'validation', false ),
 		);
 	}
@@ -76,17 +76,7 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 	 * @return string
 	 */
 	protected function column_cb( $item ) {
-		return sprintf( '<input type="checkbox" name="shipment[]" value="%d" />', (int) $item->id );
-	}
-
-	/**
-	 * ID column.
-	 *
-	 * @param object $item Row.
-	 * @return string
-	 */
-	protected function column_id( $item ) {
-		return (int) $item->id;
+		return sprintf( '<input type="checkbox" name="shipment[]" value="%s" />', esc_attr( $item->validation ) );
 	}
 
 	/**
@@ -100,7 +90,7 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 			array(
 				'page'   => 'trf-cargo-tracking',
 				'action' => 'edit',
-				'id'     => (int) $item->id,
+				'code'   => $item->validation,
 			),
 			admin_url( 'admin.php' )
 		);
@@ -109,16 +99,16 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 				array(
 					'page'     => 'trf-cargo-tracking',
 					'action'   => 'delete',
-					'shipment' => (int) $item->id,
+					'shipment' => $item->validation,
 				),
 				admin_url( 'admin.php' )
 			),
-			'trf_track_delete_' . (int) $item->id
+			TRF_Cargo_Tracking_Admin::delete_nonce_action( $item->validation )
 		);
 
 		$actions = array(
 			'edit'   => '<a href="' . esc_url( $edit_url ) . '">' . esc_html__( 'ویرایش', 'trf-cargo-tracking' ) . '</a>',
-			'delete' => '<a href="' . esc_url( $delete_url ) . '" class="submitdelete" onclick="return confirm(\'' . esc_js( __( 'از حذف این مورد اطمینان دارید؟', 'trf-cargo-tracking' ) ) . '\');">' . esc_html__( 'حذف', 'trf-cargo-tracking' ) . '</a>',
+			'delete' => '<a href="' . esc_url( $delete_url ) . '" class="submitdelete" onclick="return confirm(\'' . esc_js( __( 'از حذف این محموله و تمام ردیف‌های آن اطمینان دارید؟', 'trf-cargo-tracking' ) ) . '\');">' . esc_html__( 'حذف', 'trf-cargo-tracking' ) . '</a>',
 		);
 
 		return '<strong><a href="' . esc_url( $edit_url ) . '">' . esc_html( $item->validation ) . '</a></strong> ' . $this->row_actions( $actions );
@@ -132,6 +122,34 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 	 */
 	protected function column_description( $item ) {
 		return esc_html( wp_trim_words( wp_strip_all_tags( $item->description ), 18 ) );
+	}
+
+	/**
+	 * Public Jalali date of the latest row.
+	 *
+	 * @param object $item Row.
+	 * @return string
+	 */
+	protected function column_event_date( $item ) {
+		if ( empty( $item->event_date ) ) {
+			return '—';
+		}
+
+		$jalali = TRF_Cargo_Tracking_Jalali::from_gregorian_date( $item->event_date );
+
+		return $jalali ? esc_html( TRF_Cargo_Tracking_Jalali::to_persian_digits( $jalali ) ) : '—';
+	}
+
+	/**
+	 * Number of update rows.
+	 *
+	 * @param object $item Row.
+	 * @return string
+	 */
+	protected function column_update_count( $item ) {
+		$count = isset( $item->update_count ) ? (int) $item->update_count : 1;
+
+		return esc_html( TRF_Cargo_Tracking_Jalali::to_persian_digits( (string) $count ) );
 	}
 
 	/**
@@ -151,16 +169,16 @@ class TRF_Cargo_Tracking_List_Table extends WP_List_Table {
 
 		if ( TRF_Cargo_Tracking_Gallery::is_pdf( $first ) ) {
 			return sprintf(
-				'<span class="trf-track-list-file" title="%1$s"><span class="trf-track-list-file__badge">PDF</span></span> <span>%2$d</span>',
+				'<span class="trf-track-list-file" title="%1$s"><span class="trf-track-list-file__badge">PDF</span></span> <span>%2$s</span>',
 				esc_attr( TRF_Cargo_Tracking_Gallery::basename_from_url( $first ) ),
-				$count
+				esc_html( TRF_Cargo_Tracking_Jalali::to_persian_digits( (string) $count ) )
 			);
 		}
 
 		return sprintf(
-			'<img src="%1$s" alt="" width="40" height="40" style="object-fit:cover;border-radius:4px;vertical-align:middle;" /> <span>%2$d</span>',
+			'<img src="%1$s" alt="" width="40" height="40" style="object-fit:cover;border-radius:4px;vertical-align:middle;" /> <span>%2$s</span>',
 			esc_url( $first ),
-			$count
+			esc_html( TRF_Cargo_Tracking_Jalali::to_persian_digits( (string) $count ) )
 		);
 	}
 

@@ -4,7 +4,8 @@
  *
  * Table name and columns stay as they are so current cargo records keep working:
  *   {prefix}wpwv_validations
- *     id, validation (tracking code), description, thumbnail_url, gallery_urls
+ *     id, validation (tracking code), description, thumbnail_url, gallery_urls,
+ *     event_date, created_at
  *
  * The unused {prefix}wpwv_serials warranty table is left untouched.
  *
@@ -20,7 +21,7 @@ if ( ! defined( 'ABSPATH' ) ) {
  */
 class TRF_Cargo_Tracking_Database {
 
-	const SCHEMA_VERSION = '2';
+	const SCHEMA_VERSION = '3';
 
 	/**
 	 * Physical table used by Trust for "validation" records.
@@ -52,8 +53,10 @@ class TRF_Cargo_Tracking_Database {
 			description text NOT NULL,
 			thumbnail_url varchar(255) DEFAULT NULL,
 			gallery_urls longtext DEFAULT NULL,
+			event_date date DEFAULT NULL,
+			created_at datetime DEFAULT NULL,
 			PRIMARY KEY  (id),
-			UNIQUE KEY validation (validation)
+			KEY validation (validation)
 		) {$charset_collate};";
 
 		require_once ABSPATH . 'wp-admin/includes/upgrade.php';
@@ -65,6 +68,8 @@ class TRF_Cargo_Tracking_Database {
 		}
 
 		self::ensure_gallery_column();
+		self::ensure_date_columns();
+		self::ensure_non_unique_validation_index();
 		update_option( 'trf_cargo_tracking_schema', self::SCHEMA_VERSION );
 	}
 
@@ -88,6 +93,63 @@ class TRF_Cargo_Tracking_Database {
 				array( 'gallery_urls' => TRF_Cargo_Tracking_Gallery::encode( array( $row->thumbnail_url ) ) ),
 				array( 'id' => (int) $row->id )
 			);
+		}
+	}
+
+	/**
+	 * Add event_date and created_at without rewriting existing row values.
+	 */
+	private static function ensure_date_columns() {
+		global $wpdb;
+
+		$table = self::table();
+
+		$event = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM `{$table}` LIKE %s", 'event_date' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $event ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `event_date` DATE NULL AFTER `gallery_urls`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+
+		$created = $wpdb->get_results( $wpdb->prepare( "SHOW COLUMNS FROM `{$table}` LIKE %s", 'created_at' ) ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		if ( empty( $created ) ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD COLUMN `created_at` DATETIME NULL AFTER `event_date`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+	}
+
+	/**
+	 * Allow more than one update row per tracking code.
+	 *
+	 * dbDelta does not drop UNIQUE KEY validation, so this is done explicitly.
+	 */
+	private static function ensure_non_unique_validation_index() {
+		global $wpdb;
+
+		$table   = self::table();
+		$indexes = $wpdb->get_results( "SHOW INDEX FROM `{$table}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+
+		$has_non_unique = false;
+		$unique_names   = array();
+
+		foreach ( $indexes as $index ) {
+			$name   = isset( $index->Key_name ) ? (string) $index->Key_name : '';
+			$column = isset( $index->Column_name ) ? (string) $index->Column_name : '';
+			if ( '' === $name || 'PRIMARY' === $name || 'validation' !== $column ) {
+				continue;
+			}
+
+			$non_unique = isset( $index->Non_unique ) ? (int) $index->Non_unique : 1;
+			if ( 0 === $non_unique ) {
+				$unique_names[] = $name;
+			} else {
+				$has_non_unique = true;
+			}
+		}
+
+		foreach ( array_unique( $unique_names ) as $name ) {
+			$wpdb->query( "ALTER TABLE `{$table}` DROP INDEX `{$name}`" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
+		}
+
+		if ( ! $has_non_unique ) {
+			$wpdb->query( "ALTER TABLE `{$table}` ADD INDEX `validation` (`validation`)" ); // phpcs:ignore WordPress.DB.PreparedSQL.InterpolatedNotPrepared
 		}
 	}
 }
