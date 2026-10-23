@@ -15,10 +15,10 @@ if ( '' === $phone_tel && $phone ) {
 	$phone_tel = trf_tel_href( $phone );
 }
 ?>
-<aside class="trf-tracking__aside" aria-labelledby="trf-tracking-aside-title">
-	<header class="trf-tracking__aside-head">
+<aside class="trf-tracking__help" aria-labelledby="trf-tracking-help-title">
+	<header class="trf-tracking__help-head">
 		<p class="trf-eyebrow"><?php esc_html_e( 'راهنما', 'trf-theme' ); ?></p>
-		<h2 id="trf-tracking-aside-title"><?php esc_html_e( 'کد رهگیری را کجا پیدا کنم؟', 'trf-theme' ); ?></h2>
+		<h2 id="trf-tracking-help-title"><?php esc_html_e( 'کد رهگیری را کجا پیدا کنم؟', 'trf-theme' ); ?></h2>
 	</header>
 
 	<ul class="trf-tracking__tips">
@@ -36,7 +36,7 @@ if ( '' === $phone_tel && $phone ) {
 		</li>
 	</ul>
 
-	<div class="trf-tracking__aside-actions">
+	<div class="trf-tracking__help-actions">
 		<?php if ( $phone && $phone_tel ) : ?>
 			<a class="trf-btn trf-btn--outline" href="<?php echo esc_url( 'tel:' . $phone_tel ); ?>">
 				<?php echo trf_icon( 'phone' ); ?>
