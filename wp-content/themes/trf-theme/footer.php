@@ -50,7 +50,7 @@ $trf_phone_tel = trf_mod( 'trf_phone_tel' );
 
 	<div class="trf-footer__bottom">
 		<div class="trf-container trf-footer__bottom-inner">
-			<p>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php bloginfo( 'name' ); ?></p>
+			<p>&copy; <?php echo esc_html( gmdate( 'Y' ) ); ?> <?php esc_html_e( 'شرکت حمل و نقل بین المللی تراف', 'trf-theme' ); ?></p>
 			<p><?php esc_html_e( 'کلیه حقوق محفوظ است', 'trf-theme' ); ?></p>
 		</div>
 	</div>
